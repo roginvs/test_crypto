@@ -70,7 +70,7 @@ uint8_t poly_multiple_inversed(uint8_t a, uint8_t b)
        return window;
 };
 
-/** Multiplication of two polynoms in GF2, bits are inversed */
+/** Multiplication of two polynoms in GF2 */
 uint8_t poly_multiple(uint8_t a, uint8_t b)
 {
        // TODO: Implement without inversed bits
