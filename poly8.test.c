@@ -26,6 +26,8 @@ int poly8_test()
         "Some random poly");
 
     assertEqual(mix_column_0(0xdb, 0x13, 0x53, 0x45), 0x8e, "mix_column_0");
-
+    assertEqual(mix_column_1(0xdb, 0x13, 0x53, 0x45), 0x4d, "mix_column_1");
+    assertEqual(mix_column_2(0xdb, 0x13, 0x53, 0x45), 0xa1, "mix_column_2");
+    assertEqual(mix_column_3(0xdb, 0x13, 0x53, 0x45), 0xbc, "mix_column_3");
     return 0;
 };
