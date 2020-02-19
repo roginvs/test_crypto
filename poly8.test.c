@@ -27,7 +27,14 @@
 
 int poly8_test()
 {
-    assertEqual(poly, _inverse_bits[poly_inversed], "Inversed bits");
+    _init_inverse_bits_table();
+
+    assertEqual(_inverse_bits[0x00], 0x00, "0x00 inversed bits");
+    assertEqual(_inverse_bits[0b00000001], 0b10000000, "0b00000001 inversed bits");
+    assertEqual(_inverse_bits[0xFF], 0xFF, "0xFF inversed bits");
+    assertEqual(_inverse_bits[0b11111110], 0b01111111, "0b11111110 inversed bits");
+
+    assertEqual(poly, _inverse_bits[poly_inversed], "Inversed bits for poly are same");
 
     assertEqual(
         poly_multiple_inversed(
