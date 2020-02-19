@@ -23,11 +23,11 @@ uint8_t _inverse_bits[] =
 uint8_t poly = 0b00011011;
 uint8_t poly_inversed = 0b11011000;
 
-/** Multiplication of two polynoms in GF2 */
-uint32_t poly_multiple_inversed(uint8_t a, uint8_t b)
+/** Multiplication of two polynoms in GF2, bits are inversed */
+uint8_t poly_multiple_inversed(uint8_t a, uint8_t b)
 {
 
-       uint32_t window = 0;
+       uint8_t window = 0;
 
        // Go through highest degree to lowest
        for (uint8_t i = 0; i < 8; i++)
@@ -68,4 +68,26 @@ uint32_t poly_multiple_inversed(uint8_t a, uint8_t b)
        }
 
        return window;
-}
+};
+
+/** Multiplication of two polynoms in GF2, bits are inversed */
+uint8_t poly_multiple(uint8_t a, uint8_t b)
+{
+       // TODO: Implement without inversed bits
+       uint8_t m = poly_multiple_inversed(
+           _inverse_bits[a],
+           _inverse_bits[b]);
+       return _inverse_bits[m];
+};
+
+uint8_t mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+       return poly_multiple(
+                  0x2,
+                  b0) ^
+              poly_multiple(
+                  0x3,
+                  b1) ^
+              b2 ^
+              b3;
+};

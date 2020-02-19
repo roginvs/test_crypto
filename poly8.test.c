@@ -25,5 +25,7 @@ int poly8_test()
         _inverse_bits[0b10111010],
         "Some random poly");
 
+    assertEqual(mix_column_0(0xdb, 0x13, 0x53, 0x45), 0x8e, "mix_column_0");
+
     return 0;
 };
