@@ -1,5 +1,6 @@
 #include "./poly8.c"
 
+#include <stdio.h>
 #define assertEqual(a, b, msg)                                 \
                                                                \
     if ((a) != (b))                                            \
@@ -15,6 +16,14 @@
 
 int poly8_test()
 {
-    assertEqual(poly, _reverse_bits[poly_inversed], "Inversed bits");
+    assertEqual(poly, _inverse_bits[poly_inversed], "Inversed bits");
+
+    assertEqual(
+        poly_multiple_inversed(
+            _inverse_bits[0b001100],
+            _inverse_bits[0b1100001]),
+        _inverse_bits[0b10111010],
+        "Some random poly");
+
     return 0;
 };
