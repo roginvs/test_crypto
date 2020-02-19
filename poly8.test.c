@@ -40,7 +40,10 @@ int poly8_test()
     assertMixColumn(test1, "from wikipedia");
 
     uint8_t test2[] = {0xd4, 0xbf, 0x5d, 0x30, 0x04, 0x66, 0x81, 0xe5};
-    assertMixColumn(test2, "from nist 1");
+    assertMixColumn(test2, "nist appendix B, round 1, column 0");
+
+    uint8_t test3[] = {0xe0, 0xb4, 0x52, 0xae, 0xe0, 0xcb, 0x19, 0x9a};
+    assertMixColumn(test3, "nist appendix B, round 1, column 1");
 
     return 0;
 };
