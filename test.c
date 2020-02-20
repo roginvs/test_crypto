@@ -1,4 +1,4 @@
-#include "./poly8.test.c"
+#include "./galois.test.c"
 
 /*
 gcc -o /tmp/test test.c && /tmp/test

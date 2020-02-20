@@ -1,5 +1,8 @@
 #include <stdint.h>
 
+#ifndef __GALOIS_INCLUDED__
+#define __GALOIS_INCLUDED__
+
 /** Table of bytes with bits in inverse order */
 uint8_t _inverse_bits[0x100];
 
@@ -130,3 +133,5 @@ uint8_t mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
                   0x2,
                   b3);
 };
+
+#endif

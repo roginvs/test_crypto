@@ -1,4 +1,4 @@
-#include "./poly8.c"
+#include "./galois.c"
 
 #include <stdio.h>
 #define assertEqual(a, b, msg)                                       \
