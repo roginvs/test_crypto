@@ -69,10 +69,7 @@ int galois_test_2()
 
     assert_divide(0b10101010, 0b1101, 0, 0b11011, 0b101, 0);
 
-    err = poly_divide(0b10101010, 0b111, 0, &q, &r);
-    assert_equal(q, 0b111000, "q");
-    assert_equal(r, 0b10, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b10101010, 0b111, 0, 0b111000, 0b10, 0);
 
     err = poly_divide(0b10101010, 0b111, 1, &q, &r);
     assert_equal(q, 0b1010101, "q");
