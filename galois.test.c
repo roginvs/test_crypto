@@ -57,31 +57,17 @@ int galois_test_2()
 
     assert_divide(0b01111110, 0b11011, 0, 0b101, 0b1001, 0);
 
-    err = poly_divide(0b11111110, 0b11011, 0, &q, &r);
-    assert_equal(q, 0b1011, "q");
-    assert_equal(r, 0b1011, "q");
-    assert_equal(err, 0, "no error ");
+    assert_divide(0b11111110, 0b11011, 0, 0b1011, 0b1011, 0);
 
-    err = poly_divide(0b11111110, 0b0, 0, &q, &r);
-    assert_equal(err, 1, "error");
+    assert_divide(0b11111110, 0b0, 0, 0, 0, 1);
 
-    err = poly_divide(0b0, 0b0, 0, &q, &r);
-    assert_equal(err, 0, "no error");
+    assert_divide(0b0, 0b0, 0, 0, 0, 0);
 
-    err = poly_divide(0b0, 0b11011, 0, &q, &r);
-    assert_equal(q, 0b0, "q");
-    assert_equal(r, 0b0, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b0, 0b11011, 0, 0b0, 0b0, 0);
 
-    err = poly_divide(0b10101010, 0b10101010, 0, &q, &r);
-    assert_equal(q, 0b1, "q");
-    assert_equal(r, 0b0, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b10101010, 0b10101010, 0, 0b1, 0b0, 0);
 
-    err = poly_divide(0b10101010, 0b1101, 0, &q, &r);
-    assert_equal(q, 0b11011, "q");
-    assert_equal(r, 0b101, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b10101010, 0b1101, 0, 0b11011, 0b101, 0);
 
     err = poly_divide(0b10101010, 0b111, 0, &q, &r);
     assert_equal(q, 0b111000, "q");
