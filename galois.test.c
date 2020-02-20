@@ -42,7 +42,7 @@ void print_bits(uint8_t a)
     printf(" r=0b");                                          \
     print_bits(rr);                                           \
     printf(" err=%i\n", errr);                                \
-    err = poly_divide(a, b, 0, &q, &r);                       \
+    err = poly_divide(a, b, a_have_highest_bit, &q, &r);      \
     printf("  ");                                             \
     assert_equal(q, qq, "Check q");                           \
     printf("  ");                                             \
@@ -72,34 +72,17 @@ int galois_test_2()
 
     assert_divide(0b10101010, 0b111, 0, 0b111000, 0b10, 0);
 
-    err = poly_divide(0b10101010, 0b111, 1, &q, &r);
-    assert_equal(q, 0b1010101, "q");
-    assert_equal(r, 0b1, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b10101010, 0b111, 1, 0b1010101, 0b1, 0);
 
-    err = poly_divide(0b0, 0b111, 1, &q, &r);
-    assert_equal(q, 0b1101101, "q");
-    assert_equal(r, 0b11, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b0, 0b111, 1, 0b1101101, 0b11, 0);
 
-    err = poly_divide(0b0, 0b11111111, 1, &q, &r);
-    assert_equal(q, 0b11, "q");
-    assert_equal(r, 0b1, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b0, 0b11111111, 1, 0b11, 0b1, 0);
 
-    err = poly_divide(0b0, 0b11110101, 1, &q, &r);
-    assert_equal(q, 0b11, "q");
-    assert_equal(r, 0b11111, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b0, 0b11110101, 1, 0b11, 0b11111, 0);
 
-    err = poly_divide(0b01011011, 0b111101, 1, &q, &r);
-    assert_equal(q, 0b1111, "q");
-    assert_equal(r, 0b0, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b01011011, 0b111101, 1, 0b1111, 0b0, 0);
 
-    err = poly_divide(0b01011011, 0b1111, 1, &q, &r);
-    assert_equal(q, 0b111101, "q");
-    assert_equal(r, 0b0, "q");
-    assert_equal(err, 0, "no error");
+    assert_divide(0b01011011, 0b1111, 1, 0b111101, 0b0, 0);
+
     return 0;
 };
