@@ -28,6 +28,7 @@ int galois_test_2()
     uint8_t q;
     uint8_t r;
     uint8_t err;
+
     err = poly_divide(0b01111110, 0b11011, 0, &q, &r);
     assert_equal(q, 0b101, "q");
     assert_equal(r, 0b1001, "q");
@@ -62,6 +63,26 @@ int galois_test_2()
     err = poly_divide(0b10101010, 0b111, 0, &q, &r);
     assert_equal(q, 0b111000, "q");
     assert_equal(r, 0b10, "q");
+    assert_equal(err, 0, "no error");
+
+    err = poly_divide(0b10101010, 0b111, 1, &q, &r);
+    assert_equal(q, 0b1010101, "q");
+    assert_equal(r, 0b1, "q");
+    assert_equal(err, 0, "no error");
+
+    err = poly_divide(0b0, 0b111, 1, &q, &r);
+    assert_equal(q, 0b1101101, "q");
+    assert_equal(r, 0b11, "q");
+    assert_equal(err, 0, "no error");
+
+    err = poly_divide(0b0, 0b11111111, 1, &q, &r);
+    assert_equal(q, 0b11, "q");
+    assert_equal(r, 0b1, "q");
+    assert_equal(err, 0, "no error");
+
+    err = poly_divide(0b0, 0b11110101, 1, &q, &r);
+    assert_equal(q, 0b11, "q");
+    assert_equal(r, 0b11111, "q");
     assert_equal(err, 0, "no error");
     return 0;
 };

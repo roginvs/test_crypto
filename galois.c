@@ -113,65 +113,56 @@ uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q
        uint8_t next_q;
        uint8_t next_r;
 
-       if (!a_have_highest_bit)
+       for (int8_t i = 8; i >= 0; i--)
        {
-
-              for (int8_t i = 7; i >= 0; i--)
+              if ((i == 8 && a_have_highest_bit) || ((a >> i) & 1))
               {
-                     if ((a >> i) & 1)
+                     for (int8_t ii = (i == 8 ? i - 1 : i); ii >= 0; ii--)
                      {
-                            for (int8_t ii = i; ii >= 0; ii--)
+                            if ((b >> ii) & 1)
                             {
-                                   if ((b >> ii) & 1)
-                                   {
-                                          printf("Found div i=%i ii=%ii\n", i, ii);
-                                          local_q = 1 << (i - ii);
-                                          local_r = a ^ (b << (i - ii));
+                                   printf("Found div i=%i ii=%ii\n", i, ii);
+                                   local_q = 1 << (i - ii);
+                                   local_r = a ^ (b << (i - ii));
 
-                                          printf("Local_q = ");
-                                          print_bits(local_q);
-                                          printf("  local_r = ");
-                                          print_bits(local_r);
-                                          printf("\n");
+                                   printf("Local_q = ");
+                                   print_bits(local_q);
+                                   printf("  local_r = ");
+                                   print_bits(local_r);
+                                   printf("\n");
 
-                                          poly_divide(local_r, b, 0, &next_q, &next_r);
-                                          *q = local_q ^ next_q;
-                                          *r = next_r;
-                                          printf("Return q = ");
-                                          print_bits(*q);
-                                          printf("  r = ");
-                                          print_bits(*r);
-                                          printf("\n");
-                                          return 0;
-                                   };
+                                   poly_divide(local_r, b, 0, &next_q, &next_r);
+                                   *q = local_q ^ next_q;
+                                   *r = next_r;
+                                   printf("Return q = ");
+                                   print_bits(*q);
+                                   printf("  r = ");
+                                   print_bits(*r);
+                                   printf("\n");
+                                   return 0;
                             };
-                            printf("Error: b is zero\n");
-                            *q = 0;
-                            *r = 0;
-                            return 1;
                      };
+                     printf("Error: b is zero\n");
+                     *q = 0;
+                     *r = 0;
+                     return 1;
+              };
 
-                     if ((b >> i) & 1)
-                     {
-                            printf("Found non-zero at b at %i pos, b is greater than a. Finished\n", i);
-                            // We found a non-zero value at b, but still not value at a
-                            // This means search is over, deg(b) > deg(a)
-                            *q = 0;
-                            *r = a;
-                            return 0;
-                     };
-              }
-
-              printf("Lol: a is zero\n");
-              *q = 0;
-              *r = 0;
-              return 0;
+              if ((b >> i) & 1)
+              {
+                     printf("Found non-zero at b at %i pos, b is greater than a. Finished\n", i);
+                     // We found a non-zero value at b, but still not value at a
+                     // This means search is over, deg(b) > deg(a)
+                     *q = 0;
+                     *r = a;
+                     return 0;
+              };
        }
-       else
-       {
-              // TODO
-              return 1;
-       };
+
+       printf("Lol: a is zero\n");
+       *q = 0;
+       *r = 0;
+       return 0;
 };
 
 #endif
