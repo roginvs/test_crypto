@@ -33,6 +33,7 @@ void print_bits(uint8_t a)
 
 #define assert_divide(a, b, a_have_highest_bit, qq, rr, errr) \
     printf("Divide 0b");                                      \
+    printf(a_have_highest_bit ? "1." : "0.");                 \
     print_bits(a);                                            \
     printf(" div 0b");                                        \
     print_bits(b);                                            \
