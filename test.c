@@ -13,8 +13,8 @@ gcc -o /tmp/test test.c && /tmp/test
 
 int main()
 {
-    // check(galois_test());
-    // check(aes_test());
+    check(galois_test());
+    check(aes_test());
     check(galois_test_2());
 
     printf("All tests done\n");

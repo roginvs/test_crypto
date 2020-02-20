@@ -88,24 +88,24 @@ uint8_t poly_multiple(uint8_t a, uint8_t b)
        return _inverse_bits[m];
 };
 
-#include <stdio.h>
-void print_bits(uint8_t a)
-{
-       for (uint8_t i = 0; i < 8; i++)
-       {
-              printf((a >> (7 - i)) & 1 ? "1" : "0");
-       };
-};
+// #include <stdio.h>
+// void print_bits(uint8_t a)
+// {
+//        for (uint8_t i = 0; i < 8; i++)
+//        {
+//               printf((a >> (7 - i)) & 1 ? "1" : "0");
+//        };
+// };
 
 uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q, uint8_t *r)
 {
        // http://www.ee.unb.ca/cgi-bin/tervo/calc.pl
-       printf("\nDivide ");
-       printf(a_have_highest_bit ? "1." : "0.");
-       print_bits(a);
-       printf(" by ");
-       print_bits(b);
-       printf("\n");
+       // printf("\nDivide ");
+       // printf(a_have_highest_bit ? "1." : "0.");
+       // print_bits(a);
+       // printf(" by ");
+       // print_bits(b);
+       // printf("\n");
 
        uint8_t local_q;
        uint8_t local_r;
@@ -121,28 +121,28 @@ uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q
                      {
                             if ((b >> ii) & 1)
                             {
-                                   printf("Found div i=%i ii=%ii\n", i, ii);
+                                   // printf("Found div i=%i ii=%ii\n", i, ii);
                                    local_q = 1 << (i - ii);
                                    local_r = a ^ (b << (i - ii));
 
-                                   printf("Local_q = ");
-                                   print_bits(local_q);
-                                   printf("  local_r = ");
-                                   print_bits(local_r);
-                                   printf("\n");
+                                   // printf("Local_q = ");
+                                   // print_bits(local_q);
+                                   // printf("  local_r = ");
+                                   // print_bits(local_r);
+                                   // printf("\n");
 
                                    poly_divide(local_r, b, 0, &next_q, &next_r);
                                    *q = local_q ^ next_q;
                                    *r = next_r;
-                                   printf("Return q = ");
-                                   print_bits(*q);
-                                   printf("  r = ");
-                                   print_bits(*r);
-                                   printf("\n");
+                                   // printf("Return q = ");
+                                   // print_bits(*q);
+                                   // printf("  r = ");
+                                   // print_bits(*r);
+                                   // printf("\n");
                                    return 0;
                             };
                      };
-                     printf("Error: b is zero\n");
+                     // printf("Error: b is zero\n");
                      *q = 0;
                      *r = 0;
                      return 1;
@@ -150,7 +150,7 @@ uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q
 
               if ((b >> i) & 1)
               {
-                     printf("Found non-zero at b at %i pos, b is greater than a. Finished\n", i);
+                     //     printf("Found non-zero at b at %i pos, b is greater than a. Finished\n", i);
                      // We found a non-zero value at b, but still not value at a
                      // This means search is over, deg(b) > deg(a)
                      *q = 0;
@@ -159,7 +159,7 @@ uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q
               };
        }
 
-       printf("Lol: a is zero\n");
+       // printf("Lol: a is zero\n");
        *q = 0;
        *r = 0;
        return 0;
