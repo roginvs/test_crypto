@@ -84,11 +84,48 @@ Poly poly_multiple_inversed(Poly a, Poly b)
 /** Multiplication of two polynoms in GF2 */
 Poly poly_multiple(Poly a, Poly b)
 {
-       // TODO: Implement without inversed bits
-       uint8_t m = poly_multiple_inversed(
-           _inverse_bits[a],
-           _inverse_bits[b]);
-       return _inverse_bits[m];
+
+       Poly window = 0;
+
+       // Go through highest degree to lowest
+       for (int8_t i = BIT_LEN - 1; i >= 0; i--)
+       {
+              uint8_t bit_value = (b >> i) & 1;
+
+              // printf("Bit as pos %i value=%i\n", i, bit_value);
+              if (bit_value == 1)
+              {
+                     // Bit is set. This means that we should add
+                     //  (a * x^(31-i)) % poly
+                     // into result
+
+                     // Our window is shifted left now for 31-i items
+                     // This means it is already multiplied by x^(31-i)
+                     // So, we just adding "a" into window
+
+                     // printf("  Adding 'a' to window. Before=0x%08x after=0x%08x\n", window, window ^ a);
+                     window = window ^ a;
+              }
+
+              // If it is not the last cycle, then we need to shift window
+              // TODO: We can optimize this by altering loop, i.e.
+              //  we can have a loop with 31 iteraction but do copy-pasted things before the loop.
+              //  This might bring some performance.
+              if (i != 0)
+              {
+                     // Now prepare for shift
+                     uint8_t window_highest_degree_bit = (window >> (BIT_LEN - 1)) & 1;
+                     // printf("  window=0x%08x shiftedWindow=0x%08x shiftedBit=%i\n", window, window >> 1, window_highest_degree_bit);
+                     window = window << 1;
+                     if (window_highest_degree_bit == 1)
+                     {
+                            window = window ^ poly;
+                            // printf("  windowAfterPolyXor=0x%08x\n", window);
+                     }
+              }
+       }
+
+       return window;
 };
 
 // #include <stdio.h>
