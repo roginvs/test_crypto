@@ -3,6 +3,9 @@
 #ifndef __GALOIS_INCLUDED__
 #define __GALOIS_INCLUDED__
 
+#define BIT_LEN 8
+typedef uint8_t Poly;
+
 /** Table of bytes with bits in inverse order */
 uint8_t _inverse_bits[0x100];
 
@@ -28,17 +31,17 @@ void _init_inverse_bits_table()
        };
 };
 
-uint8_t poly = 0b00011011;
-uint8_t poly_inversed = 0b11011000;
+Poly poly = 0b00011011;
+Poly poly_inversed = 0b11011000;
 
 /** Multiplication of two polynoms in GF2, bits are inversed */
-uint8_t poly_multiple_inversed(uint8_t a, uint8_t b)
+Poly poly_multiple_inversed(Poly a, Poly b)
 {
 
-       uint8_t window = 0;
+       Poly window = 0;
 
        // Go through highest degree to lowest
-       for (uint8_t i = 0; i < 8; i++)
+       for (uint8_t i = 0; i < BIT_LEN; i++)
        {
               uint8_t bit_value = (b >> i) & 1;
 
@@ -61,7 +64,7 @@ uint8_t poly_multiple_inversed(uint8_t a, uint8_t b)
               // TODO: We can optimize this by altering loop, i.e.
               //  we can have a loop with 31 iteraction but do copy-pasted things before the loop.
               //  This might bring some performance.
-              if (i != 7)
+              if (i != BIT_LEN - 1)
               {
                      // Now prepare for shift
                      uint8_t window_highest_degree_bit = window & 1;
@@ -79,7 +82,7 @@ uint8_t poly_multiple_inversed(uint8_t a, uint8_t b)
 };
 
 /** Multiplication of two polynoms in GF2 */
-uint8_t poly_multiple(uint8_t a, uint8_t b)
+Poly poly_multiple(Poly a, Poly b)
 {
        // TODO: Implement without inversed bits
        uint8_t m = poly_multiple_inversed(
@@ -97,7 +100,7 @@ uint8_t poly_multiple(uint8_t a, uint8_t b)
 //        };
 // };
 
-uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q, uint8_t *r)
+uint8_t poly_divide(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *q, Poly *r)
 {
        // http://www.ee.unb.ca/cgi-bin/tervo/calc.pl
        // printf("\nDivide ");
@@ -107,17 +110,17 @@ uint8_t poly_divide(uint8_t a, uint8_t b, uint8_t a_have_highest_bit, uint8_t *q
        // print_bits(b);
        // printf("\n");
 
-       uint8_t local_q;
-       uint8_t local_r;
+       Poly local_q;
+       Poly local_r;
 
-       uint8_t next_q;
-       uint8_t next_r;
+       Poly next_q;
+       Poly next_r;
 
-       for (int8_t i = 8; i >= 0; i--)
+       for (int8_t i = BIT_LEN; i >= 0; i--)
        {
-              if ((i == 8 && a_have_highest_bit) || ((a >> i) & 1))
+              if ((i == BIT_LEN && a_have_highest_bit) || ((a >> i) & 1))
               {
-                     for (int8_t ii = (i == 8 ? i - 1 : i); ii >= 0; ii--)
+                     for (int8_t ii = (i == BIT_LEN ? i - 1 : i); ii >= 0; ii--)
                      {
                             if ((b >> ii) & 1)
                             {
