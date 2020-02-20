@@ -1,16 +1,20 @@
 #include "./galois.test.c"
+#include "./aes.test.c"
 
 /*
 gcc -o /tmp/test test.c && /tmp/test
 */
 
+#define check(x)  \
+    if (x)        \
+    {             \
+        return 1; \
+    };
+
 int main()
 {
-    int poly8_test_result = poly8_test();
-    if (poly8_test_result)
-    {
-        return poly8_test_result;
-    };
+    check(galois_test());
+    check(aes_test());
 
     printf("All tests done\n");
 }
