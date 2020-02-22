@@ -103,5 +103,13 @@ int aes_test()
     ShiftRows(block);
     assert_block(block, after_shift_rows, "ShiftRows");
 
+    uint8_t after_mix_columns[] = {
+        0x04, 0x66, 0x81, 0xe5,
+        0xe0, 0xcb, 0x19, 0x9a,
+        0x48, 0xf8, 0xd3, 0x7a,
+        0x28, 0x06, 0x26, 0x4c};
+    MixColumns(block);
+    assert_block(block, after_mix_columns, "MixColumns");
+
     return 0;
 }

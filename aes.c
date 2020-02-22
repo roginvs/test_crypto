@@ -108,6 +108,25 @@ void ShiftRows(Block b)
     b[11] = b[7];
     b[7] = b[3];
     b[3] = c;
+};
+
+void MixColumns(Block b)
+{
+    uint8_t a0;
+    uint8_t a1;
+    uint8_t a2;
+    uint8_t a3;
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        a0 = b[i * 4 + 0];
+        a1 = b[i * 4 + 1];
+        a2 = b[i * 4 + 2];
+        a3 = b[i * 4 + 3];
+        b[i * 4 + 0] = mix_column_0(a0, a1, a2, a3);
+        b[i * 4 + 1] = mix_column_1(a0, a1, a2, a3);
+        b[i * 4 + 2] = mix_column_2(a0, a1, a2, a3);
+        b[i * 4 + 3] = mix_column_3(a0, a1, a2, a3);
+    }
 }
 
 #endif
