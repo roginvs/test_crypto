@@ -54,7 +54,7 @@ uint8_t byte_cyclic_left_shift(uint8_t x, uint8_t i)
     return (x << i) | (x >> (8 - i));
 };
 
-uint8_t calc_sbox(uint8_t x)
+uint8_t _calc_sbox(uint8_t x)
 {
     uint8_t b = x != 0 ? get_inverse_element(x) : 0;
     uint8_t s = b ^ byte_cyclic_left_shift(b, 1) ^
@@ -63,5 +63,15 @@ uint8_t calc_sbox(uint8_t x)
                 byte_cyclic_left_shift(b, 4) ^ 0x63;
     return s;
 };
+
+uint8_t sbox[0x100];
+void init_sbox()
+{
+    sbox[0x00] = _calc_sbox(0x00);
+    for (uint8_t i = 0xFF; i != 0; i--)
+    {
+        sbox[i] = _calc_sbox(i);
+    };
+}
 
 #endif
