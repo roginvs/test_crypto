@@ -271,4 +271,17 @@ uint8_t _get_bezout_identity(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *x
        return 0;
 };
 
+Poly get_inverse_element(Poly b)
+{
+       Poly x;
+       Poly y;
+
+       uint8_t err = _get_bezout_identity(poly, b, 1, &x, &y);
+       if (err)
+       {
+              return err;
+       };
+       return y;
+};
+
 #endif
