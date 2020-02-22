@@ -151,6 +151,64 @@ uint8_t *get_rcon_at(uint8_t i)
     return (_rcon + (i - 1) * 4);
 };
 
+uint8_t get_rounds_number(uint8_t key_size_in_words)
+{
+    switch (key_size_in_words)
+    {
+    case 4:
+        return 10;
+    case 6:
+        return 12;
+    case 8:
+        return 14;
+
+    default:
+        return 0;
+    }
+}
+
+// Maximum is 240 bytes
+uint8_t get_size_of_key_expansion_buffer(uint8_t key_size_in_words)
+{
+    return 4 * 4 * (get_rounds_number(key_size_in_words) + 1);
+};
+
+void SubWord(Word w)
+{
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        w[i] = sbox[w[i]];
+    };
+};
+
+void RotWord(Word w)
+{
+    uint8_t c;
+    c = w[0];
+    w[0] = w[1];
+    w[1] = w[2];
+    w[2] = w[3];
+    w[3] = c;
+};
+
+void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
+{
+    for (uint8_t i = 0; i < 4 * (get_rounds_number(key_size_in_words) + 1); i++)
+    {
+        if (i < key_size_in_words)
+        {
+            buf[i * 4 + 0] = key[i * 4 + 0];
+            buf[i * 4 + 1] = key[i * 4 + 1];
+            buf[i * 4 + 2] = key[i * 4 + 2];
+            buf[i * 4 + 3] = key[i * 4 + 3];
+        }
+        else
+        {
+            // TODO
+        }
+    }
+};
+
 void AddRoundKey(Block b){
     // TODO
 };

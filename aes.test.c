@@ -125,25 +125,26 @@ int aes_test()
     assert_block(block, after_mix_columns, "MixColumns");
 
     init_rcon();
-    Poly rcon1[] = {
-        0x1,
-        0x00, 0x00, 0x00};
+    Poly rcon1[] = {0x1, 0x00, 0x00, 0x00};
     assert_word(get_rcon_at(1), rcon1, "rcon1");
 
-    Poly rcon2[] = {
-        0x02,
-        0x00, 0x00, 0x00};
+    Poly rcon2[] = {0x02, 0x00, 0x00, 0x00};
     assert_word(get_rcon_at(2), rcon2, "rcon2");
 
-    Poly rcon3[] = {
-        0x04,
-        0x00, 0x00, 0x00};
+    Poly rcon3[] = {0x04, 0x00, 0x00, 0x00};
     assert_word(get_rcon_at(3), rcon3, "rcon3");
 
-    Poly rcon10[] = {
-        0x36,
-        0x00, 0x00, 0x00};
+    Poly rcon10[] = {0x36, 0x00, 0x00, 0x00};
     assert_word(get_rcon_at(10), rcon10, "rcon10");
+
+    Poly word[] = {0x1, 0x2, 0x3, 0x4};
+    Poly word_after_rotate[] = {0x2, 0x3, 0x4, 0x1};
+    RotWord(word);
+    assert_word(word, word_after_rotate, "Work rotated");
+
+    Poly word_after_sub[] = {0x77, 0x7b, 0xf2, 0x7c};
+    SubWord(word);
+    assert_word(word, word_after_sub, "Word sub");
 
     return 0;
 }
