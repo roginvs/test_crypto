@@ -129,4 +129,10 @@ void MixColumns(Block b)
     }
 }
 
+typedef uint8_t *Word;
+
+void AddRoundKey(Block b){
+    // TODO
+};
+
 #endif
