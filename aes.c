@@ -76,9 +76,9 @@ void init_sbox()
 
 typedef uint8_t *Block;
 typedef uint8_t *Word;
-static const uint8_t WORD_SIZE = 4;
-static const uint8_t WORDS_IN_BLOCK = 4;
-static const uint8_t BLOCK_SIZE = WORD_SIZE * WORDS_IN_BLOCK;
+const uint8_t WORD_SIZE = 4;
+const uint8_t WORDS_IN_BLOCK = 4;
+const uint8_t BLOCK_SIZE = WORD_SIZE * WORDS_IN_BLOCK;
 
 void SubBytes(Block b)
 {
@@ -132,7 +132,7 @@ void MixColumns(Block b)
     }
 }
 
-static const uint8_t MAX_RCON = 10;
+const uint8_t MAX_RCON = 10;
 
 uint8_t _rcon[WORD_SIZE * MAX_RCON];
 void init_rcon()
