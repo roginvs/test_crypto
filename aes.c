@@ -51,7 +51,17 @@ uint8_t mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 
 uint8_t byte_cyclic_left_shift(uint8_t x, uint8_t i)
 {
-    return (x << i) | (x >> (sizeof(uint8_t) * 8 - i));
+    return (x << i) | (x >> (8 - i));
+};
+
+uint8_t calc_sbox(uint8_t x)
+{
+    uint8_t b = x != 0 ? get_inverse_element(x) : 0;
+    uint8_t s = b ^ byte_cyclic_left_shift(b, 1) ^
+                byte_cyclic_left_shift(b, 2) ^
+                byte_cyclic_left_shift(b, 3) ^
+                byte_cyclic_left_shift(b, 4) ^ 0x63;
+    return s;
 };
 
 #endif

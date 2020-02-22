@@ -30,7 +30,17 @@ int aes_test()
 
     assert_equal(byte_cyclic_left_shift(0b00000001, 0), 0b1, "Left shift 1");
     assert_equal(byte_cyclic_left_shift(0b10000000, 1), 0b1, "Left shift 2");
+    assert_equal(byte_cyclic_left_shift(0b1, 1), 0b10, "Left shift 2A");
     assert_equal(byte_cyclic_left_shift(0b10000001, 1), 0b11, "Left shift 3");
     assert_equal(byte_cyclic_left_shift(0b10011010, 4), 0b10101001, "Left shift 4");
+
+    assert_equal(calc_sbox(0x0), 0x63, "S-box 0x00");
+    assert_equal(calc_sbox(0x01), 0x7c, "S-box 0x01");
+    assert_equal(calc_sbox(0x02), 0x77, "S-box 0x02");
+    assert_equal(calc_sbox(0x60), 0xd0, "S-box 0x60");
+    assert_equal(calc_sbox(0x66), 0x33, "S-box 0x66");
+    assert_equal(calc_sbox(0xE9), 0x1E, "S-box 0xE9");
+    assert_equal(calc_sbox(0xF1), 0xA1, "S-box 0xF1");
+    assert_equal(calc_sbox(0xFF), 0x16, "S-box 0xFF");
     return 0;
 }
