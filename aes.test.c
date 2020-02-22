@@ -153,30 +153,30 @@ int aes_test()
     uint8_t expanded_key[44 * 4];
     fill_key_expansion(cipher_key, 4, expanded_key);
     assert_word(expanded_key, cipher_key, "Start 1");
-    assert_word(expanded_key + 4, cipher_key + 4, "Start 2");
-    assert_word(expanded_key + 8, cipher_key + 8, "Start 3");
-    assert_word(expanded_key + 12, cipher_key + 12, "Start 4");
+    assert_word(expanded_key + WORD_SIZE * 1, cipher_key + 4, "Start 2");
+    assert_word(expanded_key + WORD_SIZE * 2, cipher_key + 8, "Start 3");
+    assert_word(expanded_key + WORD_SIZE * 3, cipher_key + 12, "Start 4");
 
     uint8_t i4[] = {0xa0, 0xfa, 0xfe, 0x17};
-    assert_word(expanded_key + 4 * 4, i4, "i4");
+    assert_word(expanded_key + WORD_SIZE * 4, i4, "i4");
 
     uint8_t i5[] = {0x88, 0x54, 0x2c, 0xb1};
-    assert_word(expanded_key + 4 * 5, i5, "i5");
+    assert_word(expanded_key + WORD_SIZE * 5, i5, "i5");
 
     uint8_t i6[] = {0x23, 0xa3, 0x39, 0x39};
-    assert_word(expanded_key + 4 * 6, i6, "i6");
+    assert_word(expanded_key + WORD_SIZE * 6, i6, "i6");
 
     uint8_t i7[] = {0x2a, 0x6c, 0x76, 0x05};
-    assert_word(expanded_key + 4 * 7, i7, "i7");
+    assert_word(expanded_key + WORD_SIZE * 7, i7, "i7");
 
     uint8_t i8[] = {0xf2, 0xc2, 0x95, 0xf2};
-    assert_word(expanded_key + 4 * 8, i8, "i8");
+    assert_word(expanded_key + WORD_SIZE * 8, i8, "i8");
 
     uint8_t i42[] = {0xe1, 0x3f, 0x0c, 0xc8};
-    assert_word(expanded_key + 4 * 42, i42, "i42");
+    assert_word(expanded_key + WORD_SIZE * 42, i42, "i42");
 
     uint8_t i43[] = {0xb6, 0x63, 0x0c, 0xa6};
-    assert_word(expanded_key + 4 * 43, i43, "i43");
+    assert_word(expanded_key + WORD_SIZE * 43, i43, "i43");
 
     return 0;
 }
