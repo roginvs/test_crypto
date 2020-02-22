@@ -2,14 +2,27 @@
 
 #include "./aes.c"
 
-#define assert_mix_columns(d, msg)                                                                            \
-    printf(msg);                                                                                              \
-    printf(": %02x %02x %02x %02x -> %02x %02x %02x %02x\n", d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]); \
-    assert_equal(mix_column_0(d[0], d[1], d[2], d[3]), d[4], "  mix_column_0");                               \
-    assert_equal(mix_column_1(d[0], d[1], d[2], d[3]), d[5], "  mix_column_1");                               \
-    assert_equal(mix_column_2(d[0], d[1], d[2], d[3]), d[6], "  mix_column_2");                               \
-    assert_equal(mix_column_3(d[0], d[1], d[2], d[3]), d[7], "  mix_column_3");                               \
+#define assert_mix_columns(d, msg)                                              \
+    printf(msg);                                                                \
+    printf(": %02x %02x %02x %02x -> %02x %02x %02x %02x\n",                    \
+           d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);                     \
+    assert_equal(mix_column_0(d[0], d[1], d[2], d[3]), d[4], "  mix_column_0"); \
+    assert_equal(mix_column_1(d[0], d[1], d[2], d[3]), d[5], "  mix_column_1"); \
+    assert_equal(mix_column_2(d[0], d[1], d[2], d[3]), d[6], "  mix_column_2"); \
+    assert_equal(mix_column_3(d[0], d[1], d[2], d[3]), d[7], "  mix_column_3"); \
     ;
+
+#define assert_block(a, b, msg)                                               \
+    printf("Block test ");                                                    \
+    printf(msg);                                                              \
+    for (uint8_t i = 0; i < BLOCK_SIZE; i++)                                  \
+    {                                                                         \
+        if (a[i] != b[i])                                                     \
+        {                                                                     \
+            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x", i, a[i], b[i]); \
+        };                                                                    \
+    };                                                                        \
+    printf(" ok\n");
 
 int aes_test()
 {
@@ -44,5 +57,28 @@ int aes_test()
     assert_equal(sbox[0xE9], 0x1E, "S-box 0xE9");
     assert_equal(sbox[0xF1], 0xA1, "S-box 0xF1");
     assert_equal(sbox[0xFF], 0x16, "S-box 0xFF");
+
+    uint8_t block[] = {
+        0x19,
+        0x3d,
+        0xe3,
+        0xbe,
+        0xa0,
+        0xf4,
+        0xe2,
+        0x2b,
+        0x9a,
+        0xc6,
+        0x8d,
+        0x2a,
+        0xe9,
+        0xf8,
+        0x48,
+        0x08};
+    uint8_t after_sub_bytes[] = {
+        0xd4, 0x27, 0x11, 0xae, 0xe0, 0xbf, 0x98, 0xf1, 0xb8, 0xb4, 0x5d, 0xe5, 0x1e, 0x41, 0x52, 0x30};
+    SubBytes(block);
+    assert_block(block, after_sub_bytes, "SubBytes");
+
     return 0;
 }
