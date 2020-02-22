@@ -240,6 +240,7 @@ void AddRoundKey(Block b, uint8_t round, uint8_t *expanded_key)
 {
     for (uint8_t i = 0; i < BLOCK_SIZE; i++)
     {
+        b[i] = b[i] ^ expanded_key[round * BLOCK_SIZE + i];
     };
 };
 
