@@ -74,4 +74,15 @@ void init_sbox()
     };
 }
 
+typedef uint8_t *Block;
+uint8_t BLOCK_SIZE = 16;
+
+void SubBytes(Block b)
+{
+    for (uint8_t i = 0; i < BLOCK_SIZE; i++)
+    {
+        b[i] = sbox[b[i]];
+    }
+};
+
 #endif
