@@ -148,35 +148,90 @@ int aes_test()
 
     // Key expansion for AES128
     assert_equal(get_size_of_key_expansion_buffer(4), 44 * 4, "Size of key expansion");
-    uint8_t cipher_key[] = {
-        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
-    uint8_t expanded_key[44 * 4];
-    fill_key_expansion(cipher_key, 4, expanded_key);
-    assert_word(expanded_key, cipher_key, "Start 1");
-    assert_word(expanded_key + WORD_SIZE * 1, cipher_key + 4, "Start 2");
-    assert_word(expanded_key + WORD_SIZE * 2, cipher_key + 8, "Start 3");
-    assert_word(expanded_key + WORD_SIZE * 3, cipher_key + 12, "Start 4");
+    uint8_t cipher_key_128[] = {
+        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+        0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
+    uint8_t expanded_key_128[44 * 4];
+    fill_key_expansion(cipher_key_128, 4, expanded_key_128);
+    assert_word(expanded_key_128, cipher_key_128, "Start 1");
+    assert_word(expanded_key_128 + WORD_SIZE * 1, cipher_key_128 + 4, "Start 2");
+    assert_word(expanded_key_128 + WORD_SIZE * 2, cipher_key_128 + 8, "Start 3");
+    assert_word(expanded_key_128 + WORD_SIZE * 3, cipher_key_128 + 12, "Start 4");
 
     uint8_t i4[] = {0xa0, 0xfa, 0xfe, 0x17};
-    assert_word(expanded_key + WORD_SIZE * 4, i4, "i4");
+    assert_word(expanded_key_128 + WORD_SIZE * 4, i4, "i4");
 
     uint8_t i5[] = {0x88, 0x54, 0x2c, 0xb1};
-    assert_word(expanded_key + WORD_SIZE * 5, i5, "i5");
+    assert_word(expanded_key_128 + WORD_SIZE * 5, i5, "i5");
 
     uint8_t i6[] = {0x23, 0xa3, 0x39, 0x39};
-    assert_word(expanded_key + WORD_SIZE * 6, i6, "i6");
+    assert_word(expanded_key_128 + WORD_SIZE * 6, i6, "i6");
 
     uint8_t i7[] = {0x2a, 0x6c, 0x76, 0x05};
-    assert_word(expanded_key + WORD_SIZE * 7, i7, "i7");
+    assert_word(expanded_key_128 + WORD_SIZE * 7, i7, "i7");
 
     uint8_t i8[] = {0xf2, 0xc2, 0x95, 0xf2};
-    assert_word(expanded_key + WORD_SIZE * 8, i8, "i8");
+    assert_word(expanded_key_128 + WORD_SIZE * 8, i8, "i8");
 
     uint8_t i42[] = {0xe1, 0x3f, 0x0c, 0xc8};
-    assert_word(expanded_key + WORD_SIZE * 42, i42, "i42");
+    assert_word(expanded_key_128 + WORD_SIZE * 42, i42, "i42");
 
     uint8_t i43[] = {0xb6, 0x63, 0x0c, 0xa6};
-    assert_word(expanded_key + WORD_SIZE * 43, i43, "i43");
+    assert_word(expanded_key_128 + WORD_SIZE * 43, i43, "i43");
+
+    // Key expansion for AES192
+    assert_equal(get_size_of_key_expansion_buffer(6), 13 * 4 * 4, "Size of key expansion 192");
+    uint8_t cipher_key_192[] = {
+        0x8e, 0x73, 0xb0, 0xf7, 0xda, 0x0e, 0x64, 0x52,
+        0xc8, 0x10, 0xf3, 0x2b, 0x80, 0x90, 0x79, 0xe5,
+        0x62, 0xf8, 0xea, 0xd2, 0x52, 0x2c, 0x6b, 0x7b};
+
+    uint8_t expanded_key_192[13 * 4 * 4];
+    fill_key_expansion(cipher_key_192, 6, expanded_key_192);
+    uint8_t i_192_from_0_to_13[] = {
+        0x8e, 0x73, 0xb0, 0xf7, 0xda, 0x0e, 0x64, 0x52,
+        0xc8, 0x10, 0xf3, 0x2b, 0x80, 0x90, 0x79, 0xe5,
+        0x62, 0xf8, 0xea, 0xd2, 0x52, 0x2c, 0x6b, 0x7b,
+        0xfe,
+        0x0c,
+        0x91,
+        0xf7,
+        0x24,
+        0x02,
+        0xf5,
+        0xa5,
+        0xec,
+        0x12,
+        0x06,
+        0x8e,
+        0x6c,
+        0x82,
+        0x7f,
+        0x6b,
+        0x0e,
+        0x7a,
+        0x95,
+        0xb9,
+        0x5c,
+        0x56,
+        0xfe,
+        0xc2,
+        0x4d,
+        0xb7,
+        0xb4,
+        0xbd,
+        0x69,
+        0xb5,
+        0x41,
+        0x18};
+    for (uint8_t i = 0; i <= 13; i++)
+    {
+        printf("Key expansion 192 at pos %i: ", i);
+        assert_word(expanded_key_192 + WORD_SIZE * i, i_192_from_0_to_13 + i * WORD_SIZE, "");
+    }
+    uint8_t i_192_51[] = {
+        0x01, 0x00, 0x22, 0x02};
+    assert_word(expanded_key_192 + WORD_SIZE * 51, i_192_51, "Key expansion 192 at pos 51");
 
     return 0;
 }
