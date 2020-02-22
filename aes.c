@@ -213,10 +213,11 @@ void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
         }
         else
         {
+
             buf[i * 4 + 0] = buf[(i - 1) * 4 + 0];
-            buf[i * 4 + 0] = buf[(i - 1) * 4 + 1];
-            buf[i * 4 + 0] = buf[(i - 1) * 4 + 2];
-            buf[i * 4 + 0] = buf[(i - 1) * 4 + 3];
+            buf[i * 4 + 1] = buf[(i - 1) * 4 + 1];
+            buf[i * 4 + 2] = buf[(i - 1) * 4 + 2];
+            buf[i * 4 + 3] = buf[(i - 1) * 4 + 3];
 
             if (i % key_size_in_words == 0)
             {
