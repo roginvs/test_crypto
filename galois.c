@@ -213,8 +213,17 @@ uint8_t poly_divide(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *q, Poly *r
        return 0;
 };
 
+/** 
+ * Assume that deg(a) is always bigger than deg(b)
+ * */
 uint8_t _get_bezout_identity(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *x, Poly *y)
 {
+       if (b == 0b1)
+       {
+              *x = 0;
+              *y = 1;
+              return 0;
+       }
        Poly q;
        Poly r;
        if (poly_divide(a, b, a_have_highest_bit, &q, &r))
@@ -239,8 +248,27 @@ uint8_t _get_bezout_identity(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *x
               return 0;
        };
 
-       // TODO
-       return 100;
+       if (q == 0)
+       {
+              // This means deg(a) was lower than def(b)
+              *x = 0;
+              *y = 0;
+              return 3;
+       };
+
+       Poly xx;
+       Poly yy;
+
+       uint8_t err = _get_bezout_identity(b, r, 0, &xx, &yy);
+       if (err)
+       {
+              return err;
+       };
+
+       *x = yy;
+       // Degree of multiplication show be less than deg(a)
+       *y = xx ^ poly_multiple(q, yy);
+       return 0;
 };
 
 #endif
