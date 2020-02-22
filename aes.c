@@ -191,8 +191,17 @@ void RotWord(Word w)
     w[3] = c;
 };
 
+void AddWords(Word a, Word b)
+{
+    a[0] = a[0] ^ b[0];
+    a[1] = a[1] ^ b[1];
+    a[2] = a[2] ^ b[2];
+    a[3] = a[3] ^ b[3];
+}
+
 void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
 {
+
     for (uint8_t i = 0; i < 4 * (get_rounds_number(key_size_in_words) + 1); i++)
     {
         if (i < key_size_in_words)
@@ -204,7 +213,22 @@ void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
         }
         else
         {
-            // TODO
+            buf[i * 4 + 0] = buf[(i - 1) * 4 + 0];
+            buf[i * 4 + 0] = buf[(i - 1) * 4 + 1];
+            buf[i * 4 + 0] = buf[(i - 1) * 4 + 2];
+            buf[i * 4 + 0] = buf[(i - 1) * 4 + 3];
+
+            if (i % key_size_in_words == 0)
+            {
+                RotWord(buf + i * 4);
+                SubWord(buf + i * 4);
+                AddWords(buf + i * 4, get_rcon_at(i / key_size_in_words));
+            };
+            if (key_size_in_words == 8 && i % key_size_in_words == 4)
+            {
+                SubWord(buf + i * 4);
+            };
+            AddWords(buf + i * 4, buf + (i - key_size_in_words) * 4);
         }
     }
 };

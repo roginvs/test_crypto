@@ -25,17 +25,17 @@
     };                                                                          \
     printf(" ok\n");
 
-#define assert_word(a, b, msg)                                                  \
-    printf("Word test ");                                                       \
-    printf(msg);                                                                \
-    for (uint8_t i = 0; i < 4; i++)                                             \
-    {                                                                           \
-        if (a[i] != b[i])                                                       \
-        {                                                                       \
-            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x\n", i, a[i], b[i]); \
-            return 1;                                                           \
-        };                                                                      \
-    };                                                                          \
+#define assert_word(a, b, msg)                                                      \
+    printf("Word test ");                                                           \
+    printf(msg);                                                                    \
+    for (uint8_t i = 0; i < 4; i++)                                                 \
+    {                                                                               \
+        if ((a)[i] != (b)[i])                                                       \
+        {                                                                           \
+            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x\n", i, (a)[i], (b)[i]); \
+            return 1;                                                               \
+        };                                                                          \
+    };                                                                              \
     printf(" ok\n");
 
 int aes_test()
@@ -145,6 +145,19 @@ int aes_test()
     Poly word_after_sub[] = {0x77, 0x7b, 0xf2, 0x7c};
     SubWord(word);
     assert_word(word, word_after_sub, "Word sub");
+
+    // Key expansion for AES128
+    assert_equal(get_size_of_key_expansion_buffer(4), 44 * 4, "Size of key expansion");
+    uint8_t cipher_key[] = {
+        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6, 0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
+    uint8_t expanded_key[44 * 4];
+    fill_key_expansion(cipher_key, 4, expanded_key);
+    assert_word(expanded_key, cipher_key, "Start 1");
+    assert_word(expanded_key + 4, cipher_key + 4, "Start 2");
+    assert_word(expanded_key + 8, cipher_key + 8, "Start 3");
+    assert_word(expanded_key + 12, cipher_key + 12, "Start 4");
+
+    printf("%08x\n", *(uint32_t *)(expanded_key + 16));
 
     return 0;
 }
