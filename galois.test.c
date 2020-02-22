@@ -20,6 +20,8 @@ int galois_test()
         _inverse_bits[0b10111010],
         "Some random poly");
 
+    assert_equal(poly_multiple(0x57, 0x13), 0xfe, "Polynoms from aes examples");
+
     return 0;
 };
 
