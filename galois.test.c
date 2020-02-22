@@ -114,6 +114,9 @@ int galois_test_3()
 
     assert_bezout(0b1010010, 0b111, 0, 0b1, 0b11101, 0);
 
+    assert_bezout(0b101, 0b10, 0, 0b1, 0b10, 0);
+
+    // aasert_bezout(0b1010010, 0b101, 0, )
     return 0;
     //
 };
