@@ -3,6 +3,15 @@
 #ifndef __GALOIS_INCLUDED__
 #define __GALOIS_INCLUDED__
 
+/*
+
+Helpfull link
+
+http://www.ee.unb.ca/cgi-bin/tervo/calc.pl
+ 
+
+ */
+
 #define BIT_LEN 8
 typedef uint8_t Poly;
 
@@ -139,7 +148,6 @@ Poly poly_multiple(Poly a, Poly b)
 
 uint8_t poly_divide(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *q, Poly *r)
 {
-       // http://www.ee.unb.ca/cgi-bin/tervo/calc.pl
        // printf("\nDivide ");
        // printf(a_have_highest_bit ? "1." : "0.");
        // print_bits(a);
@@ -203,6 +211,36 @@ uint8_t poly_divide(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *q, Poly *r
        *q = 0;
        *r = 0;
        return 0;
+};
+
+uint8_t _get_bezout_identity(Poly a, Poly b, uint8_t a_have_highest_bit, Poly *x, Poly *y)
+{
+       Poly q;
+       Poly r;
+       if (poly_divide(a, b, a_have_highest_bit, &q, &r))
+       {
+              *x = 0;
+              *y = 0;
+              return 1;
+       };
+
+       if (r == 0b0)
+       {
+              // This should never happen
+              *x = 0;
+              *y = 0;
+              return 2;
+       };
+       if (r == 0b1)
+       {
+              // Which means deg(r) = 0
+              *x = 0b1;
+              *y = q;
+              return 0;
+       };
+
+       // TODO
+       return 100;
 };
 
 #endif

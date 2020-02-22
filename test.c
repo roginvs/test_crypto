@@ -13,10 +13,14 @@ gcc -o /tmp/test test.c && /tmp/test
 
 int main()
 {
+    /*
     check(galois_test());
     check(galois_test_2());
 
     check(aes_test());
+*/
+
+    check(galois_test_3());
 
     printf("All tests done\n");
 }

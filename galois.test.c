@@ -86,3 +86,34 @@ int galois_test_2()
 
     return 0;
 };
+
+#define assert_bezout(a, b, a_have_highest_bit, xx, yy, errr)     \
+    printf("Get bezout identity for 0b");                         \
+    printf(a_have_highest_bit ? "1." : "0.");                     \
+    print_bits(a);                                                \
+    printf(" div 0b");                                            \
+    print_bits(b);                                                \
+    printf(" == x=0b");                                           \
+    print_bits(xx);                                               \
+    printf(" y=0b");                                              \
+    print_bits(yy);                                               \
+    printf(" err=%i\n", errr);                                    \
+    err = _get_bezout_identity(a, b, a_have_highest_bit, &x, &y); \
+    printf("  ");                                                 \
+    assert_equal(x, xx, "Check x");                               \
+    printf("  ");                                                 \
+    assert_equal(y, yy, "Check y");                               \
+    printf("  ");                                                 \
+    assert_equal(err, errr, "Return code");
+
+int galois_test_3()
+{
+    uint8_t x;
+    uint8_t y;
+    uint8_t err;
+
+    assert_bezout(0b1010010, 0b111, 0, 0b1, 0b11101, 0);
+
+    return 0;
+    //
+};
