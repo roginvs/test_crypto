@@ -76,9 +76,9 @@ void init_sbox()
 
 typedef uint8_t *Block;
 typedef uint8_t *Word;
-static const uint8_t WORD_SIZE = 4;
-static const uint8_t WORDS_IN_BLOCK = 4;
-static const uint8_t BLOCK_SIZE = WORD_SIZE * WORDS_IN_BLOCK;
+const uint8_t AES_WORD_SIZE = 4;
+const uint8_t WORDS_IN_BLOCK = 4;
+const uint8_t BLOCK_SIZE = AES_WORD_SIZE * WORDS_IN_BLOCK;
 
 void SubBytes(Block b)
 {
@@ -132,18 +132,18 @@ void MixColumns(Block b)
     }
 }
 
-static const uint8_t MAX_RCON = 10;
+const uint8_t MAX_RCON = 10;
 
-uint8_t _rcon[WORD_SIZE * MAX_RCON];
+uint8_t _rcon[AES_WORD_SIZE * MAX_RCON];
 void init_rcon()
 {
     Poly xi = 0b1;
     for (uint8_t i = 0; i < 10; i++)
     {
-        _rcon[i * WORD_SIZE + 0] = xi;
-        _rcon[i * WORD_SIZE + 1] = 0;
-        _rcon[i * WORD_SIZE + 2] = 0;
-        _rcon[i * WORD_SIZE + 3] = 0;
+        _rcon[i * AES_WORD_SIZE + 0] = xi;
+        _rcon[i * AES_WORD_SIZE + 1] = 0;
+        _rcon[i * AES_WORD_SIZE + 2] = 0;
+        _rcon[i * AES_WORD_SIZE + 3] = 0;
 
         xi = poly_multiple(xi, 0b10);
     }
@@ -151,7 +151,7 @@ void init_rcon()
 
 uint8_t *get_rcon_at(uint8_t i)
 {
-    return (_rcon + (i - 1) * WORD_SIZE);
+    return (_rcon + (i - 1) * AES_WORD_SIZE);
 };
 
 uint8_t get_rounds_number(uint8_t key_size_in_words)
@@ -173,7 +173,7 @@ uint8_t get_rounds_number(uint8_t key_size_in_words)
 // Maximum is 240 bytes
 uint8_t get_size_of_key_expansion_buffer(uint8_t key_size_in_words)
 {
-    return WORD_SIZE * WORDS_IN_BLOCK * (get_rounds_number(key_size_in_words) + 1);
+    return AES_WORD_SIZE * WORDS_IN_BLOCK * (get_rounds_number(key_size_in_words) + 1);
 };
 
 void SubWord(Word w)
@@ -209,29 +209,29 @@ void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
     {
         if (i < key_size_in_words)
         {
-            for (uint8_t ii = 0; ii < WORD_SIZE; ii++)
+            for (uint8_t ii = 0; ii < AES_WORD_SIZE; ii++)
             {
-                buf[i * WORD_SIZE + ii] = key[i * WORD_SIZE + ii];
+                buf[i * AES_WORD_SIZE + ii] = key[i * AES_WORD_SIZE + ii];
             };
         }
         else
         {
-            for (uint8_t ii = 0; ii < WORD_SIZE; ii++)
+            for (uint8_t ii = 0; ii < AES_WORD_SIZE; ii++)
             {
-                buf[i * WORD_SIZE + ii] = buf[(i - 1) * WORD_SIZE + ii];
+                buf[i * AES_WORD_SIZE + ii] = buf[(i - 1) * AES_WORD_SIZE + ii];
             }
 
             if (i % key_size_in_words == 0)
             {
-                RotWord(buf + i * WORD_SIZE);
-                SubWord(buf + i * WORD_SIZE);
-                AddWords(buf + i * WORD_SIZE, get_rcon_at(i / key_size_in_words));
+                RotWord(buf + i * AES_WORD_SIZE);
+                SubWord(buf + i * AES_WORD_SIZE);
+                AddWords(buf + i * AES_WORD_SIZE, get_rcon_at(i / key_size_in_words));
             };
             if (key_size_in_words == 8 && i % key_size_in_words == 4)
             {
-                SubWord(buf + i * WORD_SIZE);
+                SubWord(buf + i * AES_WORD_SIZE);
             };
-            AddWords(buf + i * WORD_SIZE, buf + (i - key_size_in_words) * WORD_SIZE);
+            AddWords(buf + i * AES_WORD_SIZE, buf + (i - key_size_in_words) * AES_WORD_SIZE);
         }
     }
 };
