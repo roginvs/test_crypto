@@ -118,18 +118,20 @@ int galois_test_3()
 
     assert_bezout(0b1010010, 0b101, 0, 0b10, 0b100001, 0);
 
-    Poly inverse_test[] = {0b1, 0b11};
-    for (int i = 0; i < sizeof(inverse_test) / sizeof(Poly); i++)
+    // We just testing all 256 possible polynoms because field is small
+    // For 2^32 field it will be more reasonable to test some random elements
+    //   instead of all elements.
+    for (int i = 0xFF; i > 0; i--)
     {
-        Poly target = inverse_test[i];
+        Poly target = i;
         printf("Checking inverse of ");
         print_bits(target);
-        printf(" = ");
-        Poly result = get_inverse_element(inverse_test[i]);
+        printf(" x ");
+        Poly result = get_inverse_element(target);
         print_bits(result);
         printf(" ");
         Poly multiplication = poly_multiple(target, result);
-        assert_equal(multiplication, 0b1, "inverse");
+        assert_equal(multiplication, 0b1, "= 1");
     };
 
     return 0;
