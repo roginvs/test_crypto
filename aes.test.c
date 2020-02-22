@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "./aes.c"
 
 #define assert_mix_columns(d, msg)                                                                            \
@@ -26,5 +28,9 @@ int aes_test()
     uint8_t test5[] = {0x1e, 0x27, 0x98, 0xe5, 0x28, 0x06, 0x26, 0x4c};
     assert_mix_columns(test5, "Nist appendix B, round 1, column 3");
 
+    assert_equal(byte_cyclic_left_shift(0b00000001, 0), 0b1, "Left shift 1");
+    assert_equal(byte_cyclic_left_shift(0b10000000, 1), 0b1, "Left shift 2");
+    assert_equal(byte_cyclic_left_shift(0b10000001, 1), 0b11, "Left shift 3");
+    assert_equal(byte_cyclic_left_shift(0b10011010, 4), 0b10101001, "Left shift 4");
     return 0;
 }
