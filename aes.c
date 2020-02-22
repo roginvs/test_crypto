@@ -85,4 +85,29 @@ void SubBytes(Block b)
     }
 };
 
+void ShiftRows(Block b)
+{
+    uint8_t c;
+
+    c = b[13];
+    b[13] = b[1];
+    b[1] = b[5];
+    b[5] = b[9];
+    b[9] = c;
+
+    c = b[14];
+    b[14] = b[6];
+    b[6] = c;
+
+    c = b[10];
+    b[10] = b[2];
+    b[2] = c;
+
+    c = b[15];
+    b[15] = b[11];
+    b[11] = b[7];
+    b[7] = b[3];
+    b[3] = c;
+}
+
 #endif

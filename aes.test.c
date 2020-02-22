@@ -12,16 +12,17 @@
     assert_equal(mix_column_3(d[0], d[1], d[2], d[3]), d[7], "  mix_column_3"); \
     ;
 
-#define assert_block(a, b, msg)                                               \
-    printf("Block test ");                                                    \
-    printf(msg);                                                              \
-    for (uint8_t i = 0; i < BLOCK_SIZE; i++)                                  \
-    {                                                                         \
-        if (a[i] != b[i])                                                     \
-        {                                                                     \
-            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x", i, a[i], b[i]); \
-        };                                                                    \
-    };                                                                        \
+#define assert_block(a, b, msg)                                                 \
+    printf("Block test ");                                                      \
+    printf(msg);                                                                \
+    for (uint8_t i = 0; i < BLOCK_SIZE; i++)                                    \
+    {                                                                           \
+        if (a[i] != b[i])                                                       \
+        {                                                                       \
+            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x\n", i, a[i], b[i]); \
+            return 1;                                                           \
+        };                                                                      \
+    };                                                                          \
     printf(" ok\n");
 
 int aes_test()
@@ -79,6 +80,28 @@ int aes_test()
         0xd4, 0x27, 0x11, 0xae, 0xe0, 0xbf, 0x98, 0xf1, 0xb8, 0xb4, 0x5d, 0xe5, 0x1e, 0x41, 0x52, 0x30};
     SubBytes(block);
     assert_block(block, after_sub_bytes, "SubBytes");
+
+    uint8_t after_shift_rows[] = {
+        0xd4,
+        0xbf,
+        0x5d,
+        0x30,
+        0xe0,
+        0xb4,
+        0x52,
+        0xae,
+        0xb8,
+        0x41,
+        0x11,
+        0xf1,
+        0x1e,
+        0x27,
+        0x98,
+        0xe5,
+    };
+
+    ShiftRows(block);
+    assert_block(block, after_shift_rows, "ShiftRows");
 
     return 0;
 }
