@@ -131,6 +131,26 @@ void MixColumns(Block b)
 
 typedef uint8_t *Word;
 
+uint8_t _rcon[4 * 10];
+void init_rcon()
+{
+    Poly xi = 0b1;
+    for (uint8_t i = 0; i < 10; i++)
+    {
+        _rcon[i * 4 + 0] = xi;
+        _rcon[i * 4 + 1] = 0;
+        _rcon[i * 4 + 2] = 0;
+        _rcon[i * 4 + 3] = 0;
+
+        xi = poly_multiple(xi, 0b10);
+    }
+};
+
+uint8_t *get_rcon_at(uint8_t i)
+{
+    return (_rcon + (i - 1) * 4);
+};
+
 void AddRoundKey(Block b){
     // TODO
 };

@@ -25,6 +25,19 @@
     };                                                                          \
     printf(" ok\n");
 
+#define assert_word(a, b, msg)                                                  \
+    printf("Word test ");                                                       \
+    printf(msg);                                                                \
+    for (uint8_t i = 0; i < 4; i++)                                             \
+    {                                                                           \
+        if (a[i] != b[i])                                                       \
+        {                                                                       \
+            printf(" FAIL at pos = %i, a[i]=%02x, b[i]=%02x\n", i, a[i], b[i]); \
+            return 1;                                                           \
+        };                                                                      \
+    };                                                                          \
+    printf(" ok\n");
+
 int aes_test()
 {
     uint8_t test1[] = {0xdb, 0x13, 0x53, 0x45, 0x8e, 0x4d, 0xa1, 0xbc};
@@ -110,6 +123,27 @@ int aes_test()
         0x28, 0x06, 0x26, 0x4c};
     MixColumns(block);
     assert_block(block, after_mix_columns, "MixColumns");
+
+    init_rcon();
+    Poly rcon1[] = {
+        0x1,
+        0x00, 0x00, 0x00};
+    assert_word(get_rcon_at(1), rcon1, "rcon1");
+
+    Poly rcon2[] = {
+        0x02,
+        0x00, 0x00, 0x00};
+    assert_word(get_rcon_at(2), rcon2, "rcon2");
+
+    Poly rcon3[] = {
+        0x04,
+        0x00, 0x00, 0x00};
+    assert_word(get_rcon_at(3), rcon3, "rcon3");
+
+    Poly rcon10[] = {
+        0x36,
+        0x00, 0x00, 0x00};
+    assert_word(get_rcon_at(10), rcon10, "rcon10");
 
     return 0;
 }
