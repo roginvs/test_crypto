@@ -154,7 +154,7 @@ uint8_t *get_rcon_at(uint8_t i)
     return (_rcon + (i - 1) * WORD_SIZE);
 };
 
-uint8_t get_rounds_number(uint8_t key_size_in_words)
+uint8_t _get_rounds_count(uint8_t key_size_in_words)
 {
     switch (key_size_in_words)
     {
@@ -173,7 +173,7 @@ uint8_t get_rounds_number(uint8_t key_size_in_words)
 // Maximum is 240 bytes
 uint8_t get_size_of_key_expansion_buffer(uint8_t key_size_in_words)
 {
-    return WORD_SIZE * WORDS_IN_BLOCK * (get_rounds_number(key_size_in_words) + 1);
+    return WORD_SIZE * WORDS_IN_BLOCK * (_get_rounds_count(key_size_in_words) + 1);
 };
 
 void SubWord(Word w)
@@ -205,7 +205,7 @@ void AddWords(Word a, Word b)
 void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
 {
 
-    for (uint8_t i = 0; i < 4 * (get_rounds_number(key_size_in_words) + 1); i++)
+    for (uint8_t i = 0; i < 4 * (_get_rounds_count(key_size_in_words) + 1); i++)
     {
         if (i < key_size_in_words)
         {
@@ -242,6 +242,22 @@ void AddRoundKey(Block b, uint8_t round, uint8_t *expanded_key)
     {
         b[i] = b[i] ^ expanded_key[round * BLOCK_SIZE + i];
     };
+};
+
+void aes_encrypt_block(Block b, uint8_t *expanded_key, uint8_t key_size_in_words)
+{
+    AddRoundKey(b, 0, expanded_key);
+    uint8_t rounds_count = _get_rounds_count(key_size_in_words);
+    for (uint8_t round = 1; round < rounds_count; round++)
+    {
+        SubBytes(b);
+        ShiftRows(b);
+        MixColumns(b);
+        AddRoundKey(b, round, expanded_key);
+    };
+    SubBytes(b);
+    ShiftRows(b);
+    AddRoundKey(b, rounds_count, expanded_key);
 };
 
 #endif

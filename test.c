@@ -17,7 +17,8 @@ int main()
     check(galois_test_2());
     check(galois_test_3());
 
-    check(aes_test());
+    check(aes_test_1());
+    check(aes_test_2());
 
     printf("All tests done\n");
 }
