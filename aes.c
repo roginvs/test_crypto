@@ -154,21 +154,33 @@ uint8_t *get_rcon_at(uint8_t i)
     return (_rcon + (i - 1) * WORD_SIZE);
 };
 
+#define AES_128_KEY_SIZE_WORDS 4
+#define AES_192_KEY_SIZE_WORDS 6
+#define AES_256_KEY_SIZE_WORDS 8
+
+#define _AES_128_ROUNDS_COUNT 10
+#define _AES_192_ROUNDS_COUNT 12
+#define _AES_256_ROUNDS_COUNT 14
+
 uint8_t _get_rounds_count(uint8_t key_size_in_words)
 {
     switch (key_size_in_words)
     {
-    case 4:
-        return 10;
-    case 6:
-        return 12;
-    case 8:
-        return 14;
+    case AES_128_KEY_SIZE_WORDS:
+        return _AES_128_ROUNDS_COUNT;
+    case AES_192_KEY_SIZE_WORDS:
+        return _AES_192_ROUNDS_COUNT;
+    case AES_256_KEY_SIZE_WORDS:
+        return _AES_256_ROUNDS_COUNT;
 
     default:
         return 0;
     }
 }
+
+#define AES_128_EXPANDED_KEY_SIZE (WORD_SIZE * WORDS_IN_BLOCK * (_AES_128_ROUNDS_COUNT + 1))
+#define AES_192_EXPANDED_KEY_SIZE (WORD_SIZE * WORDS_IN_BLOCK * (_AES_192_ROUNDS_COUNT + 1))
+#define AES_256_EXPANDED_KEY_SIZE (WORD_SIZE * WORDS_IN_BLOCK * (_AES_256_ROUNDS_COUNT + 1))
 
 // Maximum is 240 bytes
 uint8_t get_size_of_key_expansion_buffer(uint8_t key_size_in_words)
