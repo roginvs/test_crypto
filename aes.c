@@ -76,9 +76,9 @@ void init_sbox()
 
 typedef uint8_t *Block;
 typedef uint8_t *Word;
-const uint8_t WORD_SIZE = 4;
-const uint8_t WORDS_IN_BLOCK = 4;
-const uint8_t BLOCK_SIZE = WORD_SIZE * WORDS_IN_BLOCK;
+#define WORD_SIZE 4
+#define WORDS_IN_BLOCK 4
+#define BLOCK_SIZE (WORD_SIZE * WORDS_IN_BLOCK)
 
 void SubBytes(Block b)
 {
