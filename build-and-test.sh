@@ -26,6 +26,24 @@ for fFull in `ls testdata/*`; do
       openssl enc -aes-256-cbc -iv "$iv" \
         -K "$key" -in "$fFull" -out "$DIR/$f.enc-openssl"
      
+      # Debug
+      if true; then 
+        echo "We encrypted"
+        cat "$DIR/$f.enc" | xxd
+        echo ""
+  
+        echo "Openssk encrypted"
+        cat "$DIR/$f.enc-openssl" | xxd
+        echo ""
+        
+        openssl enc -d -aes-256-cbc -iv "$iv" \
+          -K "$key" -in "$DIR/$f.enc-openssl" -nopad -out "$DIR/$f.enc-openssl-dec"
+        echo "Openssk decrypted with no pad"
+        cat "$DIR/$f.enc-openssl-dec" | xxd
+        echo ""
+      fi
+
+
       diff "$DIR/$f.enc" "$DIR/$f.enc-openssl"
       echo "good"
       echo ""

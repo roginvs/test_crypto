@@ -32,12 +32,12 @@ void aes_256_encrypt(uint8_t *in, int32_t size, Block iv, uint8_t *key, FILE *ou
     {
         uint8_t is_block_last = block_num == blocks_count - 1;
 
-        uint8_t bytes_to_copy = is_block_last ? BLOCK_SIZE : tail_bytes_count == 0 ? BLOCK_SIZE : tail_bytes_count;
+        uint8_t bytes_to_copy = !is_block_last ? BLOCK_SIZE : tail_bytes_count == 0 ? BLOCK_SIZE : tail_bytes_count;
 
-        printf("Block num = %i\n", block_num);
-        printf("is_block_last = %i\n", is_block_last);
-        printf("tail_bytes_count= %i\n", tail_bytes_count);
-        printf("bytes_to_copy= %i\n", bytes_to_copy);
+        // printf("Block num = %i\n", block_num);
+        // printf("is_block_last = %i\n", is_block_last);
+        // printf("tail_bytes_count= %i\n", tail_bytes_count);
+        // printf("bytes_to_copy= %i\n", bytes_to_copy);
         for (uint8_t i = 0; i < bytes_to_copy; i++)
         {
             b[i] = b[i] ^ in[block_num * BLOCK_SIZE + i];
@@ -47,8 +47,8 @@ void aes_256_encrypt(uint8_t *in, int32_t size, Block iv, uint8_t *key, FILE *ou
         if (is_block_last)
         {
             uint8_t padding_count = BLOCK_SIZE - bytes_to_copy;
-
-            for (uint8_t i = padding_count; i < BLOCK_SIZE; i++)
+            // printf("Padding count is %i\n", padding_count);
+            for (uint8_t i = BLOCK_SIZE - padding_count; i < BLOCK_SIZE; i++)
             {
                 b[i] = b[i] ^ padding_count;
             };
