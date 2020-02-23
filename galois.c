@@ -279,7 +279,7 @@ Poly get_inverse_element(Poly b)
        uint8_t err = _get_bezout_identity(poly, b, 1, &x, &y);
        if (err)
        {
-              return err;
+              return 0;
        };
        return y;
 };
