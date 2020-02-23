@@ -80,6 +80,7 @@ int main(int argc, char *argv[])
 
     aes_256_encrypt(input_buf, input_buf_size, iv, key, p_output_file);
 
+    printf("Closing output file%s\n", output_file_name);
     fclose(p_output_file);
 
     if (input_buf_size != 0)
@@ -89,5 +90,6 @@ int main(int argc, char *argv[])
             perror("Error un-mmapping input file");
         }
     }
+    printf("Closing input file %s\n", input_file_name);
     close(fd);
 }
