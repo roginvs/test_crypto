@@ -157,7 +157,7 @@ int aes_test_1()
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
     uint8_t expanded_key_128[AES_128_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_128, 4, expanded_key_128);
+    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE_WORDS, expanded_key_128);
     assert_word(expanded_key_128, cipher_key_128, "Start 1");
     assert_word(expanded_key_128 + WORD_SIZE * 1, cipher_key_128 + 4, "Start 2");
     assert_word(expanded_key_128 + WORD_SIZE * 2, cipher_key_128 + 8, "Start 3");
@@ -253,12 +253,12 @@ int aes_test_2()
     init_rcon();
     init_sbox();
 
-    uint8_t block[] = {
+    uint8_t block[BLOCK_SIZE] = {
         0x32, 0x43, 0xf6, 0xa8,
         0x88, 0x5a, 0x30, 0x8d,
         0x31, 0x31, 0x98, 0xa2,
         0xe0, 0x37, 0x07, 0x34};
-    uint8_t cipher_key_128[] = {
+    uint8_t cipher_key_128[AES_128_KEY_SIZE] = {
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
     uint8_t expanded_key_128[AES_128_EXPANDED_KEY_SIZE];
@@ -266,7 +266,7 @@ int aes_test_2()
 
     aes_encrypt_block(block, expanded_key_128, AES_128_KEY_SIZE_WORDS);
 
-    uint8_t encrypted_block[] = {
+    uint8_t encrypted_block[BLOCK_SIZE] = {
         0x39, 0x25, 0x84, 0x1d, 0x02, 0xdc, 0x09, 0xfb,
         0xdc, 0x11, 0x85, 0x97, 0x19, 0x6a, 0x0b, 0x32};
 
