@@ -206,7 +206,7 @@ int aes_test_1()
     for (uint8_t i = 0; i <= 13; i++)
     {
         printf("Key expansion 192 at pos %i: ", i);
-        assert_word(expanded_key_192 + WORD_SIZE * i, i_192_from_0_to_13 + i * WORD_SIZE, "");
+        assert_word(expanded_key_192 + WORD_SIZE * i, i_192_from_0_to_13 + i * WORD_SIZE, " ");
     }
     uint8_t i_192_51[] = {
         0x01, 0x00, 0x22, 0x02};
@@ -239,7 +239,7 @@ int aes_test_1()
     for (uint8_t i = 0; i <= 21; i++)
     {
         printf("Key expansion 256 at pos %i: ", i);
-        assert_word(expanded_key_256 + WORD_SIZE * i, i_256_from_0_to_21 + i * WORD_SIZE, "");
+        assert_word(expanded_key_256 + WORD_SIZE * i, i_256_from_0_to_21 + i * WORD_SIZE, " ");
     };
     uint8_t i_256_59[] = {
         0x70, 0x6c, 0x63, 0x1e};
