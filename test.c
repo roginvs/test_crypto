@@ -20,6 +20,7 @@ int main()
     check(aes_test_1());
     check(aes_test_2());
     check(aes_test_3());
+    check(aes_test_4());
 
     printf("All tests done\n");
 }
