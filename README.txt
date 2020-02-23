@@ -2,6 +2,8 @@
 
 ## Сборка и тест
 
+![ci_test](https://github.com/roginvs/test_crypto/workflows/ci_test/badge.svg)
+
 ```bash
 ./build-and-test.sh
 ```
