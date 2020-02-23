@@ -154,27 +154,23 @@ uint8_t *get_rcon_at(uint8_t i)
     return (_rcon + (i - 1) * WORD_SIZE);
 };
 
-#define AES_128_KEY_SIZE_WORDS 4
-#define AES_192_KEY_SIZE_WORDS 6
-#define AES_256_KEY_SIZE_WORDS 8
-
-#define AES_128_KEY_SIZE (AES_128_KEY_SIZE_WORDS * WORD_SIZE)
-#define AES_192_KEY_SIZE (AES_192_KEY_SIZE_WORDS * WORD_SIZE)
-#define AES_256_KEY_SIZE (AES_256_KEY_SIZE_WORDS * WORD_SIZE)
+#define AES_128_KEY_SIZE (4 * WORD_SIZE)
+#define AES_192_KEY_SIZE (6 * WORD_SIZE)
+#define AES_256_KEY_SIZE (8 * WORD_SIZE)
 
 #define _AES_128_ROUNDS_COUNT 10
 #define _AES_192_ROUNDS_COUNT 12
 #define _AES_256_ROUNDS_COUNT 14
 
-uint8_t _get_rounds_count(uint8_t key_size_in_words)
+uint8_t _get_rounds_count(uint8_t key_size)
 {
-    switch (key_size_in_words)
+    switch (key_size)
     {
-    case AES_128_KEY_SIZE_WORDS:
+    case AES_128_KEY_SIZE:
         return _AES_128_ROUNDS_COUNT;
-    case AES_192_KEY_SIZE_WORDS:
+    case AES_192_KEY_SIZE:
         return _AES_192_ROUNDS_COUNT;
-    case AES_256_KEY_SIZE_WORDS:
+    case AES_256_KEY_SIZE:
         return _AES_256_ROUNDS_COUNT;
 
     default:
@@ -187,9 +183,9 @@ uint8_t _get_rounds_count(uint8_t key_size_in_words)
 #define AES_256_EXPANDED_KEY_SIZE (WORD_SIZE * WORDS_IN_BLOCK * (_AES_256_ROUNDS_COUNT + 1))
 
 // Maximum is 240 bytes
-uint8_t get_size_of_key_expansion_buffer(uint8_t key_size_in_words)
+uint8_t get_size_of_key_expansion_buffer(uint8_t key_size)
 {
-    return WORD_SIZE * WORDS_IN_BLOCK * (_get_rounds_count(key_size_in_words) + 1);
+    return WORD_SIZE * WORDS_IN_BLOCK * (_get_rounds_count(key_size) + 1);
 };
 
 void SubWord(Word w)
@@ -218,10 +214,12 @@ void AddWords(Word a, Word b)
     a[3] = a[3] ^ b[3];
 }
 
-void fill_key_expansion(uint8_t key[], uint8_t key_size_in_words, uint8_t *buf)
+void fill_key_expansion(uint8_t key[], uint8_t key_size, uint8_t *buf)
 {
 
-    for (uint8_t i = 0; i < 4 * (_get_rounds_count(key_size_in_words) + 1); i++)
+    uint8_t key_size_in_words = key_size / WORD_SIZE;
+
+    for (uint8_t i = 0; i < 4 * (_get_rounds_count(key_size) + 1); i++)
     {
         if (i < key_size_in_words)
         {
@@ -260,10 +258,10 @@ void AddRoundKey(Block b, uint8_t round, uint8_t *expanded_key)
     };
 };
 
-void aes_encrypt_block(Block b, uint8_t *expanded_key, uint8_t key_size_in_words)
+void aes_encrypt_block(Block b, uint8_t *expanded_key, uint8_t key_size)
 {
     AddRoundKey(b, 0, expanded_key);
-    uint8_t rounds_count = _get_rounds_count(key_size_in_words);
+    uint8_t rounds_count = _get_rounds_count(key_size);
     for (uint8_t round = 1; round < rounds_count; round++)
     {
         SubBytes(b);

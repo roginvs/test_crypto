@@ -147,17 +147,17 @@ int aes_test_1()
     assert_word(word, word_after_sub, "Word sub");
 
     // Key expansion for AES128
-    assert_equal(get_size_of_key_expansion_buffer(4),
+    assert_equal(get_size_of_key_expansion_buffer(AES_128_KEY_SIZE),
                  AES_128_EXPANDED_KEY_SIZE,
-                 "Size of key expansion");
+                 "Size of key expansion 128");
     assert_equal((44 * 4),
                  AES_128_EXPANDED_KEY_SIZE,
-                 "Size of key expansion");
+                 "Size of key expansion 128 = 44*4");
     uint8_t cipher_key_128[] = {
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
     uint8_t expanded_key_128[AES_128_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE_WORDS, expanded_key_128);
+    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE, expanded_key_128);
     assert_word(expanded_key_128, cipher_key_128, "Start 1");
     assert_word(expanded_key_128 + WORD_SIZE * 1, cipher_key_128 + 4, "Start 2");
     assert_word(expanded_key_128 + WORD_SIZE * 2, cipher_key_128 + 8, "Start 3");
@@ -185,7 +185,7 @@ int aes_test_1()
     assert_word(expanded_key_128 + WORD_SIZE * 43, i43, "i43");
 
     // Key expansion for AES192
-    assert_equal(get_size_of_key_expansion_buffer(6),
+    assert_equal(get_size_of_key_expansion_buffer(AES_192_KEY_SIZE),
                  AES_192_EXPANDED_KEY_SIZE, "Size of key expansion 192");
     assert_equal(AES_192_EXPANDED_KEY_SIZE, 13 * 4 * 4, "Size of key expansion 192");
     uint8_t cipher_key_192[] = {
@@ -194,7 +194,7 @@ int aes_test_1()
         0x62, 0xf8, 0xea, 0xd2, 0x52, 0x2c, 0x6b, 0x7b};
 
     uint8_t expanded_key_192[AES_192_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_192, AES_192_KEY_SIZE_WORDS, expanded_key_192);
+    fill_key_expansion(cipher_key_192, AES_192_KEY_SIZE, expanded_key_192);
     uint8_t i_192_from_0_to_13[] = {
         0x8e, 0x73, 0xb0, 0xf7, 0xda, 0x0e, 0x64, 0x52,
         0xc8, 0x10, 0xf3, 0x2b, 0x80, 0x90, 0x79, 0xe5,
@@ -213,7 +213,7 @@ int aes_test_1()
     assert_word(expanded_key_192 + WORD_SIZE * 51, i_192_51, "Key expansion 192 at pos 51");
 
     // Key expansion for AES256
-    assert_equal(get_size_of_key_expansion_buffer(8),
+    assert_equal(get_size_of_key_expansion_buffer(AES_256_KEY_SIZE),
                  AES_256_EXPANDED_KEY_SIZE, "Size of key expansion 256");
     assert_equal(AES_256_EXPANDED_KEY_SIZE, (15 * 16), "Size of expanded key 256");
     uint8_t cipher_key_256[] = {
@@ -223,7 +223,7 @@ int aes_test_1()
         0x2d, 0x98, 0x10, 0xa3, 0x09, 0x14, 0xdf, 0xf4};
 
     uint8_t expanded_key_256[AES_256_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_256, 8, expanded_key_256);
+    fill_key_expansion(cipher_key_256, AES_256_KEY_SIZE, expanded_key_256);
     uint8_t i_256_from_0_to_21[] = {
         0x60, 0x3d, 0xeb, 0x10, 0x15, 0xca, 0x71, 0xbe,
         0x2b, 0x73, 0xae, 0xf0, 0x85, 0x7d, 0x77, 0x81,
@@ -262,9 +262,9 @@ int aes_test_2()
         0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
         0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
     uint8_t expanded_key_128[AES_128_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE_WORDS, expanded_key_128);
+    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE, expanded_key_128);
 
-    aes_encrypt_block(block, expanded_key_128, AES_128_KEY_SIZE_WORDS);
+    aes_encrypt_block(block, expanded_key_128, AES_128_KEY_SIZE);
 
     uint8_t encrypted_block[BLOCK_SIZE] = {
         0x39, 0x25, 0x84, 0x1d, 0x02, 0xdc, 0x09, 0xfb,
@@ -289,9 +289,9 @@ int aes_test_3()
         0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17};
 
     uint8_t expanded_key_192[AES_192_EXPANDED_KEY_SIZE];
-    fill_key_expansion(cipher_key_192, AES_192_KEY_SIZE_WORDS, expanded_key_192);
+    fill_key_expansion(cipher_key_192, AES_192_KEY_SIZE, expanded_key_192);
 
-    aes_encrypt_block(block, expanded_key_192, AES_192_KEY_SIZE_WORDS);
+    aes_encrypt_block(block, expanded_key_192, AES_192_KEY_SIZE);
 
     uint8_t encrypted_block[BLOCK_SIZE] = {
         0xdd, 0xa9, 0x7c, 0xa4, 0x86, 0x4c, 0xdf, 0xe0,
