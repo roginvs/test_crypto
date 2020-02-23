@@ -132,7 +132,7 @@ void MixColumns(Block b)
     }
 }
 
-const uint8_t MAX_RCON = 10;
+#define MAX_RCON 10
 
 uint8_t _rcon[WORD_SIZE * MAX_RCON];
 void init_rcon()
