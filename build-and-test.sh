@@ -24,7 +24,7 @@ for fFull in `ls testdata/*`; do
       echo "Using iv=$iv"
       ./main.out "$iv" "$key" "$fFull" "$DIR/$f.enc"
       openssl enc -aes-256-cbc -iv "$iv" \
-        -K "$key" -nopad -in "$fFull" -out "$DIR/$f.enc-openssl"
+        -K "$key" -in "$fFull" -out "$DIR/$f.enc-openssl"
      
       diff "$DIR/$f.enc" "$DIR/$f.enc-openssl"
       echo "good"
