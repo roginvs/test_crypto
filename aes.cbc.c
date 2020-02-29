@@ -71,3 +71,41 @@ void aes_256_cbc_encrypt(uint8_t *in, int32_t size, Block iv, uint8_t *key,
         write(b, BLOCK_SIZE, write_user_data);
     };
 }
+
+void aes_256_cbc_decrypt(uint8_t *in, int32_t size, Block iv, uint8_t *key,
+                         write_handler write,
+                         void *write_user_data)
+{
+    init_tables();
+
+    uint8_t key_expanded[AES_256_EXPANDED_KEY_SIZE];
+    fill_key_expansion(key, AES_256_KEY_SIZE, key_expanded);
+
+    int32_t blocks_count = size / BLOCK_SIZE;
+
+    uint8_t current_block[BLOCK_SIZE] = {0x00};
+    uint8_t current_iv[BLOCK_SIZE] = {0x00};
+    memcpy(current_iv, iv, BLOCK_SIZE);
+
+    for (int32_t block_num = 0; block_num < blocks_count; block_num++)
+    {
+        memcpy(current_block, in + block_num * BLOCK_SIZE, BLOCK_SIZE);
+
+        aes_decrypt_block(current_block, key_expanded, AES_256_KEY_SIZE);
+
+        for (uint8_t i = 0; i < BLOCK_SIZE; i++)
+        {
+            current_block[i] = current_block[i] ^ current_iv[i];
+        }
+        memcpy(current_iv, in + block_num * BLOCK_SIZE, BLOCK_SIZE);
+
+        uint8_t is_block_last = block_num == blocks_count - 1;
+
+        uint8_t bytes_to_write = is_block_last ? BLOCK_SIZE - current_block[BLOCK_SIZE - 1]
+                                               : BLOCK_SIZE;
+        if (bytes_to_write > 0)
+        {
+            write(current_block, bytes_to_write, write_user_data);
+        };
+    };
+}

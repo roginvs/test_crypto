@@ -32,6 +32,15 @@ int main(int argc, char *argv[])
         return 120;
     };
 
+    if (is_encrypting)
+    {
+        printf("Encrypting\n");
+    }
+    else
+    {
+        printf("Decrypting\n");
+    };
+
     char *iv_char = argv[2];
     char *key_char = argv[3];
 
@@ -76,8 +85,16 @@ int main(int argc, char *argv[])
     printf("Opening output file %s\n", output_file_name);
     FILE *p_output_file = fopen(output_file_name, "wb");
 
-    aes_256_cbc_encrypt(input_buf, input_buf_size, iv, key,
-                        &writer, p_output_file);
+    if (is_encrypting)
+    {
+        aes_256_cbc_encrypt(input_buf, input_buf_size, iv, key,
+                            &writer, p_output_file);
+    }
+    else
+    {
+        aes_256_cbc_decrypt(input_buf, input_buf_size, iv, key,
+                            &writer, p_output_file);
+    };
 
     printf("Closing output file %s\n", output_file_name);
     fclose(p_output_file);
