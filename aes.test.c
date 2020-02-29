@@ -40,6 +40,8 @@
 
 int aes_test_1()
 {
+    init_tables();
+
     uint8_t test1[] = {0xdb, 0x13, 0x53, 0x45, 0x8e, 0x4d, 0xa1, 0xbc};
     assert_mix_columns(test1, "From wikipedia");
 
@@ -61,16 +63,14 @@ int aes_test_1()
     assert_equal(byte_cyclic_left_shift(0b10000001, 1), 0b11, "Left shift 3");
     assert_equal(byte_cyclic_left_shift(0b10011010, 4), 0b10101001, "Left shift 4");
 
-    init_tables();
-
-    assert_equal(sbox[0x0], 0x63, "S-box 0x00");
-    assert_equal(sbox[0x01], 0x7c, "S-box 0x01");
-    assert_equal(sbox[0x02], 0x77, "S-box 0x02");
-    assert_equal(sbox[0x60], 0xd0, "S-box 0x60");
-    assert_equal(sbox[0x66], 0x33, "S-box 0x66");
-    assert_equal(sbox[0xE9], 0x1E, "S-box 0xE9");
-    assert_equal(sbox[0xF1], 0xA1, "S-box 0xF1");
-    assert_equal(sbox[0xFF], 0x16, "S-box 0xFF");
+    assert_equal(_sbox[0x0], 0x63, "S-box 0x00");
+    assert_equal(_sbox[0x01], 0x7c, "S-box 0x01");
+    assert_equal(_sbox[0x02], 0x77, "S-box 0x02");
+    assert_equal(_sbox[0x60], 0xd0, "S-box 0x60");
+    assert_equal(_sbox[0x66], 0x33, "S-box 0x66");
+    assert_equal(_sbox[0xE9], 0x1E, "S-box 0xE9");
+    assert_equal(_sbox[0xF1], 0xA1, "S-box 0xF1");
+    assert_equal(_sbox[0xFF], 0x16, "S-box 0xFF");
 
     uint8_t block[] = {
         0x19,

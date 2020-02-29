@@ -17,13 +17,13 @@ uint8_t _calc_sbox(uint8_t x)
     return s;
 };
 
-uint8_t sbox[0x100];
+uint8_t _sbox[0x100];
 void _init_sbox()
 {
-    sbox[0x00] = _calc_sbox(0x00);
+    _sbox[0x00] = _calc_sbox(0x00);
     for (uint8_t i = 0xFF; i != 0; i--)
     {
-        sbox[i] = _calc_sbox(i);
+        _sbox[i] = _calc_sbox(i);
     };
 }
 
@@ -37,7 +37,7 @@ void SubBytes(Block b)
 {
     for (uint8_t i = 0; i < BLOCK_SIZE; i++)
     {
-        b[i] = sbox[b[i]];
+        b[i] = _sbox[b[i]];
     }
 };
 
@@ -66,14 +66,25 @@ void ShiftRows(Block b)
     b[3] = c;
 };
 
+uint8_t _poly_multiple_02[0x100];
+uint8_t _poly_multiple_03[0x100];
+
+void _init_poly_multiplication_table()
+{
+    _poly_multiple_02[0x00] = 0x00;
+    _poly_multiple_03[0x00] = 0x00;
+
+    for (uint8_t i = 0xFF; i != 0; i--)
+    {
+        _poly_multiple_02[i] = poly_multiple(i, 0x2);
+        _poly_multiple_03[i] = poly_multiple(i, 0x3);
+    };
+};
+
 uint8_t _mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 {
-    return poly_multiple(
-               0x2,
-               b0) ^
-           poly_multiple(
-               0x3,
-               b1) ^
+    return _poly_multiple_02[b0] ^
+           _poly_multiple_03[b1] ^
            b2 ^
            b3;
 };
@@ -81,35 +92,23 @@ uint8_t _mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 uint8_t _mix_column_1(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 {
     return b0 ^
-           poly_multiple(
-               0x2,
-               b1) ^
-           poly_multiple(
-               0x3,
-               b2) ^
+           _poly_multiple_02[b1] ^
+           _poly_multiple_03[b2] ^
            b3;
 };
 
 uint8_t _mix_column_2(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 {
     return b0 ^ b1 ^
-           poly_multiple(
-               0x2,
-               b2) ^
-           poly_multiple(
-               0x3,
-               b3);
+           _poly_multiple_02[b2] ^
+           _poly_multiple_03[b3];
 };
 
 uint8_t _mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
 {
-    return poly_multiple(
-               0x3,
-               b0) ^
+    return _poly_multiple_03[b0] ^
            b1 ^ b2 ^
-           poly_multiple(
-               0x2,
-               b3);
+           _poly_multiple_02[b3];
 };
 
 void MixColumns(Block b)
@@ -152,6 +151,7 @@ void init_tables()
 {
     _init_sbox();
     _init_rcon();
+    _init_poly_multiplication_table();
 };
 
 uint8_t *get_rcon_at(uint8_t i)
@@ -197,7 +197,7 @@ void SubWord(Word w)
 {
     for (uint8_t i = 0; i < 4; i++)
     {
-        w[i] = sbox[w[i]];
+        w[i] = _sbox[w[i]];
     };
 };
 
