@@ -168,6 +168,57 @@ void MixColumns(Block b)
     }
 }
 
+uint8_t _inv_mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return _poly_multiple_0e[b0] ^
+           _poly_multiple_0b[b1] ^
+           _poly_multiple_0d[b2] ^
+           _poly_multiple_09[b3];
+};
+
+uint8_t _inv_mix_column_1(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return _poly_multiple_09[b0] ^
+           _poly_multiple_0e[b1] ^
+           _poly_multiple_0b[b2] ^
+           _poly_multiple_0d[b3];
+};
+
+uint8_t _inv_mix_column_2(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return _poly_multiple_0d[b0] ^
+           _poly_multiple_09[b1] ^
+           _poly_multiple_0e[b2] ^
+           _poly_multiple_0b[b3];
+};
+
+uint8_t _inv_mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return _poly_multiple_0b[b0] ^
+           _poly_multiple_0d[b1] ^
+           _poly_multiple_09[b2] ^
+           _poly_multiple_0e[b3];
+};
+
+void InvMixColumns(Block b)
+{
+    uint8_t a0;
+    uint8_t a1;
+    uint8_t a2;
+    uint8_t a3;
+    for (uint8_t i = 0; i < 4; i++)
+    {
+        a0 = b[i * 4 + 0];
+        a1 = b[i * 4 + 1];
+        a2 = b[i * 4 + 2];
+        a3 = b[i * 4 + 3];
+        b[i * 4 + 0] = _inv_mix_column_0(a0, a1, a2, a3);
+        b[i * 4 + 1] = _inv_mix_column_1(a0, a1, a2, a3);
+        b[i * 4 + 2] = _inv_mix_column_2(a0, a1, a2, a3);
+        b[i * 4 + 3] = _inv_mix_column_3(a0, a1, a2, a3);
+    }
+}
+
 #define MAX_RCON 10
 
 uint8_t _rcon[WORD_SIZE * MAX_RCON];

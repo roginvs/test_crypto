@@ -343,6 +343,10 @@ int _aes_test_5()
 
     assert_block(block, target, "InvShiftRows");
 
+    MixColumns(target);
+    InvMixColumns(target);
+    assert_block(block, target, "InvMixColumns");
+
     return 0;
 };
 
