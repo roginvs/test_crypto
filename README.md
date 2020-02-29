@@ -13,10 +13,15 @@
 Поддерживается только AES-256-CBC с автопаддингом в режиме openssl
 
 ```bash
-./main.out <iv> <key> <input_file_name> <output_file_name>
+./main.out <mode> <iv> <key> <input_file_name> <output_file_name>
 
-# Пример
+# mode = aes-256-cbc | aes-256-cbc-d
+# iv = Вектор инициализации
+```
 
+### Пример для шифрования
+
+```bash
 ./main.out \
   aes-256-cbc \
   22332211aabb22aa889922aa99002200 \
@@ -30,6 +35,26 @@ openssl enc -aes-256-cbc \
   -K 2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
   -in in.txt \
   -out in.txt.encrypted
+
+```
+
+### Пример для дешифрования
+
+```bash
+./main.out \
+  aes-256-cbc-d \
+  22332211aabb22aa889922aa99002200 \
+  2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
+  in.txt.encrypted \
+  in.txt.decrypted
+
+# Тоже самое, только через openssl
+openssl enc -aes-256-cbc \
+   -d \
+  -iv 22332211aabb22aa889922aa99002200 \
+  -K 2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
+  -in in.txt.encrypted \
+  -out in.txt.decrypted
 
 ```
 
