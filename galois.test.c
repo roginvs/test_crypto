@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 #include "./galois.c"
-#include "./assert_equal.c"
+#include "./test_utils.c"
 
 int galois_test()
 {

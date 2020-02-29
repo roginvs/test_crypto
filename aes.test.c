@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "./aes.c"
 
@@ -38,7 +39,7 @@
     };                                                                              \
     printf(" ok\n");
 
-int aes_test_1()
+int _aes_test_1()
 {
     init_tables();
 
@@ -247,7 +248,7 @@ int aes_test_1()
     return 0;
 };
 
-int aes_test_2()
+int _aes_test_2()
 {
     init_tables();
 
@@ -273,7 +274,7 @@ int aes_test_2()
     return 0;
 }
 
-int aes_test_3()
+int _aes_test_3()
 {
     init_tables();
 
@@ -299,7 +300,7 @@ int aes_test_3()
     return 0;
 }
 
-int aes_test_4()
+int _aes_test_4()
 {
     init_tables();
 
@@ -325,3 +326,33 @@ int aes_test_4()
 
     return 0;
 }
+
+int _aes_test_5()
+{
+    init_tables();
+
+    uint8_t block[BLOCK_SIZE] = {
+        0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
+        0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
+
+    uint8_t target[BLOCK_SIZE] = {0x00};
+    memcpy(target, block, BLOCK_SIZE);
+
+    ShiftRows(target);
+    InvShiftRows(target);
+
+    assert_block(block, target, "InvShiftRows");
+
+    return 0;
+};
+
+int aes_test()
+{
+    check(_aes_test_1());
+    check(_aes_test_2());
+    check(_aes_test_3());
+    check(_aes_test_4());
+    check(_aes_test_5());
+
+    return 0;
+};

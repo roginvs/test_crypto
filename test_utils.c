@@ -12,4 +12,10 @@
         printf("ok\n");                                              \
     };
 
+#define check(x)  \
+    if (x)        \
+    {             \
+        return 1; \
+    };
+
 #endif

@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "./aes.c"
+#include <string.h>
 
 /** Тип колбека на запись */
 typedef void (*write_handler)(
