@@ -50,7 +50,7 @@ openssl enc -aes-256-cbc \
 
 # Тоже самое, только через openssl
 openssl enc -aes-256-cbc \
-   -d \
+  -d \
   -iv 22332211aabb22aa889922aa99002200 \
   -K 2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
   -in in.txt.encrypted \
