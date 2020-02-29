@@ -352,6 +352,31 @@ int _aes_test_5()
     assert_block(block, target, "InvSubBytes");
 
     return 0;
+}
+
+int _aes_test_6()
+{
+    init_tables();
+
+    uint8_t block[BLOCK_SIZE] = {
+        0x32, 0x43, 0xf6, 0xa8,
+        0x88, 0x5a, 0x30, 0x8d,
+        0x31, 0x31, 0x98, 0xa2,
+        0xe0, 0x37, 0x07, 0x34};
+    uint8_t target[BLOCK_SIZE] = {0x00};
+    memcpy(target, block, BLOCK_SIZE);
+    uint8_t cipher_key_128[AES_128_KEY_SIZE] = {
+        0x2b, 0x7e, 0x15, 0x16, 0x28, 0xae, 0xd2, 0xa6,
+        0xab, 0xf7, 0x15, 0x88, 0x09, 0xcf, 0x4f, 0x3c};
+    uint8_t expanded_key_128[AES_128_EXPANDED_KEY_SIZE];
+    fill_key_expansion(cipher_key_128, AES_128_KEY_SIZE, expanded_key_128);
+
+    aes_encrypt_block(target, expanded_key_128, AES_128_KEY_SIZE);
+    aes_decrypt_block(target, expanded_key_128, AES_128_KEY_SIZE);
+
+    assert_block(block, target, "Decryption");
+
+    return 0;
 };
 
 int aes_test()
@@ -363,6 +388,7 @@ int aes_test()
     check(_aes_test_3());
     check(_aes_test_4());
     check(_aes_test_5());
+    check(_aes_test_6());
 
     return 0;
 };
