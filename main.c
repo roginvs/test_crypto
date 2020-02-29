@@ -11,8 +11,7 @@
 
 void aes_256_encrypt(uint8_t *in, int32_t size, Block iv, uint8_t *key, FILE *outfile)
 {
-    init_rcon();
-    init_sbox();
+    init_tables();
 
     uint8_t key_expanded[AES_256_EXPANDED_KEY_SIZE];
     fill_key_expansion(key, AES_256_KEY_SIZE, key_expanded);

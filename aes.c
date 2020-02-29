@@ -65,7 +65,7 @@ uint8_t _calc_sbox(uint8_t x)
 };
 
 uint8_t sbox[0x100];
-void init_sbox()
+void _init_sbox()
 {
     sbox[0x00] = _calc_sbox(0x00);
     for (uint8_t i = 0xFF; i != 0; i--)
@@ -135,7 +135,7 @@ void MixColumns(Block b)
 #define MAX_RCON 10
 
 uint8_t _rcon[WORD_SIZE * MAX_RCON];
-void init_rcon()
+void _init_rcon()
 {
     Poly xi = 0b1;
     for (uint8_t i = 0; i < 10; i++)
@@ -147,6 +147,12 @@ void init_rcon()
 
         xi = poly_multiple(xi, 0b10);
     }
+};
+
+void init_tables()
+{
+    _init_sbox();
+    _init_rcon();
 };
 
 uint8_t *get_rcon_at(uint8_t i)

@@ -61,7 +61,7 @@ int aes_test_1()
     assert_equal(byte_cyclic_left_shift(0b10000001, 1), 0b11, "Left shift 3");
     assert_equal(byte_cyclic_left_shift(0b10011010, 4), 0b10101001, "Left shift 4");
 
-    init_sbox();
+    init_tables();
 
     assert_equal(sbox[0x0], 0x63, "S-box 0x00");
     assert_equal(sbox[0x01], 0x7c, "S-box 0x01");
@@ -124,7 +124,6 @@ int aes_test_1()
     MixColumns(block);
     assert_block(block, after_mix_columns, "MixColumns");
 
-    init_rcon();
     Poly rcon1[] = {0x1, 0x00, 0x00, 0x00};
     assert_word(get_rcon_at(1), rcon1, "rcon1");
 
@@ -250,8 +249,7 @@ int aes_test_1()
 
 int aes_test_2()
 {
-    init_rcon();
-    init_sbox();
+    init_tables();
 
     uint8_t block[BLOCK_SIZE] = {
         0x32, 0x43, 0xf6, 0xa8,
@@ -277,8 +275,7 @@ int aes_test_2()
 
 int aes_test_3()
 {
-    init_rcon();
-    init_sbox();
+    init_tables();
 
     uint8_t block[BLOCK_SIZE] = {
         0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
@@ -304,8 +301,7 @@ int aes_test_3()
 
 int aes_test_4()
 {
-    init_rcon();
-    init_sbox();
+    init_tables();
 
     uint8_t block[BLOCK_SIZE] = {
         0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,

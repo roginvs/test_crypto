@@ -29,7 +29,7 @@ openssl enc -aes-256-cbc \
   -K 2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
   -in in.txt \
   -out in.txt.encrypted
-  
+
 ```
 
 ## Использование как библиотеки
@@ -39,8 +39,7 @@ openssl enc -aes-256-cbc \
 #include "./aes.c"
 
 // Инициализация таблиц
-init_rcon();
-init_sbox();
+init_tables();
 
 // Блок для шифрования
 uint8_t block[BLOCK_SIZE] = {
