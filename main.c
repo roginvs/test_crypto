@@ -6,7 +6,6 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-
 #include "./aes.cbc.c"
 
 void writer(uint8_t *buf, uint32_t len, void *user_data)
@@ -16,11 +15,28 @@ void writer(uint8_t *buf, uint32_t len, void *user_data)
 
 int main(int argc, char *argv[])
 {
-    char *iv_char = argv[1];
-    char *key_char = argv[2];
+    char *command = argv[1];
 
-    char *input_file_name = argv[3];
-    char *output_file_name = argv[4];
+    uint8_t is_encrypting;
+    if (strcmp(command, "aes-256-cbc") == 0)
+    {
+        is_encrypting = 1;
+    }
+    else if (strcmp(command, "aes-256-cbc-d") == 0)
+    {
+        is_encrypting = 0;
+    }
+    else
+    {
+        printf("Wrong usage\n");
+        return 120;
+    };
+
+    char *iv_char = argv[2];
+    char *key_char = argv[3];
+
+    char *input_file_name = argv[4];
+    char *output_file_name = argv[5];
 
     uint8_t iv[BLOCK_SIZE];
     for (uint8_t i = 0; i < BLOCK_SIZE; i++)

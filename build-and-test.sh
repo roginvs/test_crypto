@@ -23,7 +23,7 @@ for fFull in `ls testdata/*`; do
     for iv in "00000000000000000000000000000000" "22332211aabb22aa889922aa99002200"; do
       echo "Using iv=$iv"
       echo "Encrypting"
-      ./main.out "$iv" "$key" "$fFull" "$DIR/$f.enc"
+      ./main.out aes-256-cbc "$iv" "$key" "$fFull" "$DIR/$f.enc"
       echo "Encrypting with openssl"
       openssl enc -aes-256-cbc -iv "$iv" \
         -K "$key" -in "$fFull" -out "$DIR/$f.enc-openssl"
