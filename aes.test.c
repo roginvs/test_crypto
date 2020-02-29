@@ -2,14 +2,14 @@
 
 #include "./aes.c"
 
-#define assert_mix_columns(d, msg)                                              \
-    printf(msg);                                                                \
-    printf(": %02x %02x %02x %02x -> %02x %02x %02x %02x\n",                    \
-           d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);                     \
-    assert_equal(mix_column_0(d[0], d[1], d[2], d[3]), d[4], "  mix_column_0"); \
-    assert_equal(mix_column_1(d[0], d[1], d[2], d[3]), d[5], "  mix_column_1"); \
-    assert_equal(mix_column_2(d[0], d[1], d[2], d[3]), d[6], "  mix_column_2"); \
-    assert_equal(mix_column_3(d[0], d[1], d[2], d[3]), d[7], "  mix_column_3"); \
+#define assert_mix_columns(d, msg)                                               \
+    printf(msg);                                                                 \
+    printf(": %02x %02x %02x %02x -> %02x %02x %02x %02x\n",                     \
+           d[0], d[1], d[2], d[3], d[4], d[5], d[6], d[7]);                      \
+    assert_equal(_mix_column_0(d[0], d[1], d[2], d[3]), d[4], "  mix_column_0"); \
+    assert_equal(_mix_column_1(d[0], d[1], d[2], d[3]), d[5], "  mix_column_1"); \
+    assert_equal(_mix_column_2(d[0], d[1], d[2], d[3]), d[6], "  mix_column_2"); \
+    assert_equal(_mix_column_3(d[0], d[1], d[2], d[3]), d[7], "  mix_column_3"); \
     ;
 
 #define assert_block(a, b, msg)                                                 \

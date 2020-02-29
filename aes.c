@@ -2,53 +2,6 @@
 #define __AES_INCLUDED__
 
 #include "./galois.c"
-
-uint8_t mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
-{
-    return poly_multiple(
-               0x2,
-               b0) ^
-           poly_multiple(
-               0x3,
-               b1) ^
-           b2 ^
-           b3;
-};
-
-uint8_t mix_column_1(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
-{
-    return b0 ^
-           poly_multiple(
-               0x2,
-               b1) ^
-           poly_multiple(
-               0x3,
-               b2) ^
-           b3;
-};
-
-uint8_t mix_column_2(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
-{
-    return b0 ^ b1 ^
-           poly_multiple(
-               0x2,
-               b2) ^
-           poly_multiple(
-               0x3,
-               b3);
-};
-
-uint8_t mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
-{
-    return poly_multiple(
-               0x3,
-               b0) ^
-           b1 ^ b2 ^
-           poly_multiple(
-               0x2,
-               b3);
-};
-
 uint8_t byte_cyclic_left_shift(uint8_t x, uint8_t i)
 {
     return (x << i) | (x >> (8 - i));
@@ -113,6 +66,52 @@ void ShiftRows(Block b)
     b[3] = c;
 };
 
+uint8_t _mix_column_0(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return poly_multiple(
+               0x2,
+               b0) ^
+           poly_multiple(
+               0x3,
+               b1) ^
+           b2 ^
+           b3;
+};
+
+uint8_t _mix_column_1(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return b0 ^
+           poly_multiple(
+               0x2,
+               b1) ^
+           poly_multiple(
+               0x3,
+               b2) ^
+           b3;
+};
+
+uint8_t _mix_column_2(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return b0 ^ b1 ^
+           poly_multiple(
+               0x2,
+               b2) ^
+           poly_multiple(
+               0x3,
+               b3);
+};
+
+uint8_t _mix_column_3(uint8_t b0, uint8_t b1, uint8_t b2, uint8_t b3)
+{
+    return poly_multiple(
+               0x3,
+               b0) ^
+           b1 ^ b2 ^
+           poly_multiple(
+               0x2,
+               b3);
+};
+
 void MixColumns(Block b)
 {
     uint8_t a0;
@@ -125,10 +124,10 @@ void MixColumns(Block b)
         a1 = b[i * 4 + 1];
         a2 = b[i * 4 + 2];
         a3 = b[i * 4 + 3];
-        b[i * 4 + 0] = mix_column_0(a0, a1, a2, a3);
-        b[i * 4 + 1] = mix_column_1(a0, a1, a2, a3);
-        b[i * 4 + 2] = mix_column_2(a0, a1, a2, a3);
-        b[i * 4 + 3] = mix_column_3(a0, a1, a2, a3);
+        b[i * 4 + 0] = _mix_column_0(a0, a1, a2, a3);
+        b[i * 4 + 1] = _mix_column_1(a0, a1, a2, a3);
+        b[i * 4 + 2] = _mix_column_2(a0, a1, a2, a3);
+        b[i * 4 + 3] = _mix_column_3(a0, a1, a2, a3);
     }
 }
 
