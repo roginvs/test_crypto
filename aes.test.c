@@ -347,6 +347,10 @@ int _aes_test_5()
     InvMixColumns(target);
     assert_block(block, target, "InvMixColumns");
 
+    SubBytes(target);
+    InvSubBytes(target);
+    assert_block(block, target, "InvSubBytes");
+
     return 0;
 };
 

@@ -18,12 +18,20 @@ uint8_t _calc_sbox(uint8_t x)
 };
 
 uint8_t _sbox[0x100];
+uint8_t _inv_sbox[0x100];
 void _init_sbox()
 {
-    _sbox[0x00] = _calc_sbox(0x00);
+    uint8_t val;
+
+    val = _calc_sbox(0x00);
+    _sbox[0x00] = val;
+    _inv_sbox[val] = 0x00;
+
     for (uint8_t i = 0xFF; i != 0; i--)
     {
-        _sbox[i] = _calc_sbox(i);
+        val = _calc_sbox(i);
+        _sbox[i] = val;
+        _inv_sbox[val] = i;
     };
 }
 
@@ -38,6 +46,14 @@ void SubBytes(Block b)
     for (uint8_t i = 0; i < BLOCK_SIZE; i++)
     {
         b[i] = _sbox[b[i]];
+    }
+};
+
+void InvSubBytes(Block b)
+{
+    for (uint8_t i = 0; i < BLOCK_SIZE; i++)
+    {
+        b[i] = _inv_sbox[b[i]];
     }
 };
 
