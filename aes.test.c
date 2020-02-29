@@ -348,6 +348,8 @@ int _aes_test_5()
 
 int aes_test()
 {
+    init_tables();
+
     check(_aes_test_1());
     check(_aes_test_2());
     check(_aes_test_3());

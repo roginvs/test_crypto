@@ -93,16 +93,29 @@ void InvShiftRows(Block b)
 
 uint8_t _poly_multiple_02[0x100];
 uint8_t _poly_multiple_03[0x100];
+uint8_t _poly_multiple_09[0x100];
+uint8_t _poly_multiple_0b[0x100];
+uint8_t _poly_multiple_0d[0x100];
+uint8_t _poly_multiple_0e[0x100];
 
 void _init_poly_multiplication_table()
 {
     _poly_multiple_02[0x00] = 0x00;
     _poly_multiple_03[0x00] = 0x00;
+    _poly_multiple_09[0x00] = 0x00;
+    _poly_multiple_0b[0x00] = 0x00;
+    _poly_multiple_0d[0x00] = 0x00;
+    _poly_multiple_0e[0x00] = 0x00;
 
     for (uint8_t i = 0xFF; i != 0; i--)
     {
-        _poly_multiple_02[i] = poly_multiple(i, 0x2);
-        _poly_multiple_03[i] = poly_multiple(i, 0x3);
+        _poly_multiple_02[i] = poly_multiple(i, 0x02);
+        _poly_multiple_03[i] = poly_multiple(i, 0x03);
+
+        _poly_multiple_09[i] = poly_multiple(i, 0x09);
+        _poly_multiple_0b[i] = poly_multiple(i, 0x0b);
+        _poly_multiple_0d[i] = poly_multiple(i, 0x0d);
+        _poly_multiple_0e[i] = poly_multiple(i, 0x0e);
     };
 };
 
