@@ -390,7 +390,7 @@ void aes_decrypt_block(Block b, uint8_t *expanded_key, uint8_t key_size)
     AddRoundKey(b, rounds_count, expanded_key);
     InvShiftRows(b);
     InvSubBytes(b);
-    for (uint8_t round = rounds_count; round != 0; round--)
+    for (uint8_t round = rounds_count - 1; round != 0; round--)
     {
         AddRoundKey(b, round, expanded_key);
         InvMixColumns(b);
