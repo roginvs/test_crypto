@@ -10,7 +10,7 @@
 
 ## Использование в режиме командой строки
 
-Поддерживается только AES-256-CBC с автопаддингом в режиме openssl
+Поддерживается только AES-256-CBC с PKCS5 паддингом
 
 ```bash
 ./main.out <mode> <iv> <key> <input_file_name> <output_file_name>
