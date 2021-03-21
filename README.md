@@ -1,6 +1,6 @@
-# Реализация шифрования AES в режиме CBC
+# Implementing AES encryption in CBC mode
 
-## Сборка и тест
+## Building and testing
 
 ![ci_test](https://github.com/roginvs/test_crypto/workflows/ci_test/badge.svg)
 
@@ -8,18 +8,18 @@
 ./build-and-test.sh
 ```
 
-## Использование в режиме командой строки
+## Using in command-line mode
 
-Поддерживается только AES-256-CBC с автопаддингом в режиме openssl
+Only AES-256-CBC with PKCS5 padding is supported
 
 ```bash
 ./main.out <mode> <iv> <key> <input_file_name> <output_file_name>
 
 # mode = aes-256-cbc | aes-256-cbc-d
-# iv = Вектор инициализации
+# iv = initialization vector
 ```
 
-### Пример для шифрования
+### Encryption example
 
 ```bash
 ./main.out \
@@ -29,7 +29,7 @@
   in.txt \
   in.txt.encrypted
 
-# Тоже самое, только через openssl
+# The same, but using openssl
 openssl enc -aes-256-cbc \
   -iv 22332211aabb22aa889922aa99002200 \
   -K 2b7e151628aed2a6abf7158809cf4f3c2b7e151628aed2a6abf7158809cf4f3c \
@@ -38,7 +38,7 @@ openssl enc -aes-256-cbc \
 
 ```
 
-### Пример для дешифрования
+### Decryption example
 
 ```bash
 ./main.out \
@@ -48,7 +48,7 @@ openssl enc -aes-256-cbc \
   in.txt.encrypted \
   in.txt.decrypted
 
-# Тоже самое, только через openssl
+# The same, but using openssl
 openssl enc -aes-256-cbc \
   -d \
   -iv 22332211aabb22aa889922aa99002200 \
@@ -58,38 +58,38 @@ openssl enc -aes-256-cbc \
 
 ```
 
-## Использование как библиотеки
+## Using as library
 
 ```C
 
 #include "./aes.c"
 
-// Инициализация таблиц
+// First of all we need to initialize tables
 init_tables();
 
-// Блок для шифрования
+// Block to encrypt
 uint8_t block[BLOCK_SIZE] = {
     0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77,
     0x88, 0x99, 0xaa, 0xbb, 0xcc, 0xdd, 0xee, 0xff};
 
-// Ключ. В данном примере 256 бит
+// Key. In this example it is 256 bits length
 uint8_t cipher_key_256[AES_256_KEY_SIZE] = {
     0x00, 0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07,
     0x08, 0x09, 0x0a, 0x0b, 0x0c, 0x0d, 0x0e, 0x0f,
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17,
     0x18, 0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f};
 
-// Для ключа нужно сделать расширение
+// We have to perform expansion for the key according to standard
 uint8_t expanded_key_256[AES_256_EXPANDED_KEY_SIZE];
 fill_key_expansion(cipher_key_256, AES_256_KEY_SIZE, expanded_key_256);
 
-// И затем зашифровать блок
+// And thenn to encrypt the block
 aes_encrypt_block(block, expanded_key_256, AES_256_KEY_SIZE);
 
-// Теперь block содержит зашифрованные данные
+// Now block contains encrypted data
 ```
 
-## Что можно улучшить
+## What can be improved
 
-- Попробовать использовать x86/x64 операции для ускорения
-- Проверить что файл открывается на запись с buffered write - не нужно делать fsync после каждого блока
+- Try to use x86/x64 operations for perfomance
+- Chech that file is opened using buffered write - no need to perform fsync after each block
