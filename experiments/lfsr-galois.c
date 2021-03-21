@@ -23,6 +23,11 @@ void test_lfsr()
     // This is an example from wikipedia, deg=16
     //POLYNOM const polynom_mask = 0b1011010000000000;
 
+    // An irreducible polynomial from
+    // https://www.partow.net/programming/polynomials/index.html#deg16
+    // x^16 + x^12 + x^3 + x^1 + 1
+    // POLYNOM const polynom_mask = 0b1101000000001000;
+
     unsigned long period = 0;
 
     do
