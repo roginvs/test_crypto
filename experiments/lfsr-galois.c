@@ -12,7 +12,7 @@ void test_lfsr()
 {
     typedef uint16_t POLYNOM;
 
-    POLYNOM start_state = 0x1; /* Any nonzero start state will work. */
+    POLYNOM start_state = 0x1;
     POLYNOM lfsr = start_state;
 
     // This is a "x^n + x^1 + 1" polynom
@@ -31,18 +31,19 @@ void test_lfsr()
     // x^16 + x^15 + x^11 + x^10 + x^9 + x^8 + x^6 + x^4 + x^2 + x^1 + 1
     // POLYNOM const polynom_mask = 0b1110101011110001;
 
-    unsigned long period = 0;
+    unsigned long observed_period = 0;
 
     do
     {
+        // Multiply lfsr by "x" in GF(2^n)
         lfsr = (lfsr >> 1) ^ (-(lfsr & 1u) & polynom_mask);
 
-        ++period;
+        ++observed_period;
     } while (lfsr != start_state);
 
     unsigned long maximum_possible_period = (1l << (sizeof(POLYNOM) * CHAR_BIT)) - 1;
     printf("Maximum possible period = %lu\n", maximum_possible_period);
-    printf("Observed period = %lu\n", period);
+    printf("Observed period = %lu\n", observed_period);
 }
 
 int main()
